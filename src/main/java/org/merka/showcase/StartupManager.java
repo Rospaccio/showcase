@@ -41,10 +41,25 @@ public class StartupManager implements ServletContextListener
 		try
 		{
 			String tableCreationStatement = 
-					  "DROP TABLE IF EXISTS USER; "
-					+ "CREATE TABLE USER (USERNAME VARCHAR(45) NOT NULL, PASSWORD VARCHAR(45) NOT NULL, PRIMARY KEY (USERNAME));";
-			String insertStatement = "insert into USER values ('rospo', 'rospo');";
-			String insertStatement2 = "insert into USER values ('rospo2', 'rospo2');";
+					  "DROP TABLE IF EXISTS USER CASCADE; DROP TABLE IF EXISTS USER_ROLES;"
+					// -----
+					+ "CREATE TABLE USER "
+					+ "(USERNAME VARCHAR(45) NOT NULL"
+					+ ", PASSWORD VARCHAR(45) NOT NULL"
+					+ ", ENABLED BOOLEAN NOT NULL"
+					+ ", PRIMARY KEY (USERNAME));"
+					+ "CREATE TABLE user_roles ("
+					+ "  user_role_id int NOT NULL identity"
+					+ ",  username varchar(45) NOT NULL"
+					+ ",  role varchar(45) NOT NULL"
+					+ ",  UNIQUE (role,username)"
+					+ ",  CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES user (username));";
+			
+			String insertStatement = "insert into USER values ('rospo', 'rospo', true);";
+			String insertStatement2 = "insert into USER values ('rospo2', 'rospo2', true);";
+			
+			String insertStatement3 = "INSERT INTO user_roles (username, role) VALUES ('rospo2', 'ROLE_USER'); "
+					+ "INSERT INTO user_roles (username, role) VALUES ('rospo', 'ROLE_ADMIN');";
 			
 			HsqlProperties p = new HsqlProperties();
 	        p.setProperty("server.database.0", "file:showcase");
@@ -60,6 +75,7 @@ public class StartupManager implements ServletContextListener
 			statement.execute(tableCreationStatement);
 			statement.execute(insertStatement);
 			statement.execute(insertStatement2);
+			statement.execute(insertStatement3);
 		}
 		catch (SQLException | IOException | AclFormatException e)
 		{

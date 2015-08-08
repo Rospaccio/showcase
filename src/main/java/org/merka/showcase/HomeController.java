@@ -48,4 +48,10 @@ public class HomeController {
 		model.addAttribute("message", "Autenthication failed");
 		return "welcome";
 	}
+	
+	@RequestMapping(value = "/loginPage")
+	public String loginPage(Model model)
+	{
+		return "loginPage";
+	}
 }

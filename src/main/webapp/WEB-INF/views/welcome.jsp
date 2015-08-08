@@ -12,7 +12,7 @@
 	<meta name="author" content="">
 <!-- 	<link rel="icon" href="../../favicon.ico"> -->
 	
-	<title>Home page</title>
+	<title>Welcome page</title>
 	
 	<!-- Bootstrap core CSS -->
 	<link href="/resources/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
