@@ -35,4 +35,17 @@ public class HomeController {
 		
 		return "home";
 	}
+	
+	@RequestMapping(value = "/welcome", method = RequestMethod.GET)
+	public String signIn(Locale locale, Model model)
+	{
+		model.addAttribute("message", "Welcome back!");
+		return "welcome";
+	}
+	
+	@RequestMapping(value = "/fail")
+	public String fail(Model model){
+		model.addAttribute("message", "Autenthication failed");
+		return "welcome";
+	}
 }
