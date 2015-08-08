@@ -20,6 +20,8 @@ public class StartupManager implements ServletContextListener
 
 	private static final Logger logger = LoggerFactory.getLogger(StartupManager.class);
 	
+	private static Server inMemoryServer;
+	
 	public StartupManager()
 	{
 	}
@@ -27,7 +29,9 @@ public class StartupManager implements ServletContextListener
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0)
 	{
-		
+		if(inMemoryServer != null){
+			inMemoryServer.shutdown();
+		}
 	}
 
 	@Override
@@ -36,20 +40,26 @@ public class StartupManager implements ServletContextListener
 		logger.info("\n\n\n inside contextInitialized! \n\n\n");
 		try
 		{
-			String tableCreationStatement = "CREATE TABLE USER (USERNAME VARCHAR(45) NOT NULL, PRIMARY KEY (USERNAME));";
+			String tableCreationStatement = 
+					  "DROP TABLE IF EXISTS USER; "
+					+ "CREATE TABLE USER (USERNAME VARCHAR(45) NOT NULL, PASSWORD VARCHAR(45) NOT NULL, PRIMARY KEY (USERNAME));";
+			String insertStatement = "insert into USER values ('rospo', 'rospo');";
+			String insertStatement2 = "insert into USER values ('rospo2', 'rospo2');";
 			
 			HsqlProperties p = new HsqlProperties();
 	        p.setProperty("server.database.0", "file:showcase");
 	        p.setProperty("server.dbname.0", "showcase");
 	        p.setProperty("server.port", "5222");
 			
-			Server hsqlServer = new Server();
-			hsqlServer.setProperties(p);
-			hsqlServer.start();
+			inMemoryServer = new Server();
+			inMemoryServer.setProperties(p);
+			inMemoryServer.start();
 			
 			Connection c = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost:5222/showcase", "sa", "");
 			Statement statement = c.createStatement();
 			statement.execute(tableCreationStatement);
+			statement.execute(insertStatement);
+			statement.execute(insertStatement2);
 		}
 		catch (SQLException | IOException | AclFormatException e)
 		{
