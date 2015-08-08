@@ -22,6 +22,12 @@ local.properties
 .loadpath
 .springBeans
 
+# HSQLDB files
+*.lck
+*.log
+*.script
+*.properties
+
 # Eclipse Core
 .project
 
