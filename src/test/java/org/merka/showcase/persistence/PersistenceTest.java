@@ -40,7 +40,6 @@ public class PersistenceTest implements InitializingBean
 	@Override
 	public void afterPropertiesSet()
 	{
-//		startupManager = new StartupManager();
 		startupManager.initDataBase();
 		entityManagerFactory = Persistence.createEntityManagerFactory("org.merka.showcase.jpa");		
 	}
