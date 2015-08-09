@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.servlet.ServletContextEvent;
@@ -14,24 +15,27 @@ import javax.servlet.ServletContextListener;
 import org.hsqldb.persist.HsqlProperties;
 import org.hsqldb.server.Server;
 import org.hsqldb.server.ServerAcl.AclFormatException;
+import org.merka.showcase.entity.Rank;
+import org.merka.showcase.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class StartupManager implements ServletContextListener
 {
 
-	private static final Logger logger = LoggerFactory.getLogger(StartupManager.class);
-	
-	private static Server inMemoryServer;
-	
+	private static final Logger	logger	= LoggerFactory.getLogger(StartupManager.class);
+
+	private static Server		inMemoryServer;
+
 	public StartupManager()
 	{
 	}
-	
+
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0)
 	{
-		if(inMemoryServer != null){
+		if (inMemoryServer != null)
+		{
 			inMemoryServer.shutdown();
 		}
 	}
@@ -43,13 +47,12 @@ public class StartupManager implements ServletContextListener
 		initDataBase();
 		setupORM();
 	}
-	
-	protected void initDataBase()
+
+	public void initDataBase()
 	{
 		try
 		{
-			String tableCreationStatement = 
-					  "DROP TABLE IF EXISTS USER CASCADE; DROP TABLE IF EXISTS USER_ROLES;"
+			String tableCreationStatement = "DROP TABLE IF EXISTS USER CASCADE; DROP TABLE IF EXISTS USER_ROLES;"
 					// -----
 					+ "CREATE TABLE USER "
 					+ "(USERNAME VARCHAR(45) NOT NULL"
@@ -62,24 +65,25 @@ public class StartupManager implements ServletContextListener
 					+ ",  role varchar(45) NOT NULL"
 					+ ",  UNIQUE (role,username)"
 					+ ",  CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES user (username));";
-			
+
 			String insertStatement = "insert into USER values ('rospo', 'rospo', true);";
 			String insertStatement2 = "insert into USER values ('rospo2', 'rospo2', true);";
-			
+
 			String insertStatement3 = "INSERT INTO user_roles (username, role) VALUES ('rospo2', 'ROLE_USER'); "
 					+ "INSERT INTO user_roles (username, role) VALUES ('rospo', 'ROLE_ADMIN');"
 					+ "INSERT INTO user_roles (username, role) VALUES ('rospo', 'ROLE_USER');";
-			
+
 			HsqlProperties p = new HsqlProperties();
-	        p.setProperty("server.database.0", "file:showcase");
-	        p.setProperty("server.dbname.0", "showcase");
-	        p.setProperty("server.port", "5222");
-			
+			p.setProperty("server.database.0", "file:showcase");
+			p.setProperty("server.dbname.0", "showcase");
+			p.setProperty("server.port", "5222");
+
 			inMemoryServer = new Server();
 			inMemoryServer.setProperties(p);
 			inMemoryServer.start();
-			
-			Connection c = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost:5222/showcase", "sa", "");
+
+			Connection c = DriverManager.getConnection(
+					"jdbc:hsqldb:hsql://localhost:5222/showcase", "sa", "");
 			Statement statement = c.createStatement();
 			statement.execute(tableCreationStatement);
 			statement.execute(insertStatement);
@@ -92,14 +96,34 @@ public class StartupManager implements ServletContextListener
 			throw new RuntimeException(e);
 		}
 	}
-	
-	protected void setupORM()
+
+	public void setupORM()
 	{
-		// The parameter of this method call (persistenceUnitName) must match the one set in persistence.xml
+		// The parameter of this method call (persistenceUnitName) must match
+		// the one set in persistence.xml
 		// as the value of the value attribute of persistence-unit
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("org.merka.showcase.jpa");
-		
-		
+		EntityManagerFactory entityManagerFactory = Persistence
+				.createEntityManagerFactory("org.merka.showcase.jpa");
+		try
+		{
+			// adds an app User and a Rank for that user
+			User appUser = new User();
+			Rank rank = new Rank();
+			rank.setOwner(appUser);
+			rank.setName("Canzoni");
+			rank.setDescription("Le mie canzoni preferite");
+			
+			appUser.setUsername("gonfiolo");
+			EntityManager manager = entityManagerFactory.createEntityManager();
+			manager.getTransaction().begin();
+			manager.persist(appUser);
+			manager.persist(rank);
+			manager.getTransaction().commit();
+		}
+		catch (Exception e)
+		{
+			logger.error("Error while adding new app User", e);
+		}
 	}
 
 }

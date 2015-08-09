@@ -16,7 +16,7 @@
 		<spring.security.version>4.0.2.RELEASE</spring.security.version>
 		<common-lang.version>2.6</common-lang.version>
 		<commons-io.version>2.4</commons-io.version>
-		<hibernate.version>5.0.0.CR4</hibernate.version>
+		<hibernate.version>4.3.10.Final</hibernate.version>
 	</properties>
 	<dependencies>
 
@@ -169,9 +169,18 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.7</version>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>4.2.0.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<plugins>

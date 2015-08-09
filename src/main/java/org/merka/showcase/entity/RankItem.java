@@ -1,8 +1,10 @@
 package org.merka.showcase.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -59,16 +61,15 @@ public class RankItem
 		this.positionInRank = positionInRank;
 	}
 	
-	
-//	public Rank getRank()
-//	{
-//		return rank;
-//	}
-//	public void setRank(Rank rank)
-//	{
-//		this.rank = rank;
-//	}
-	
+	@ManyToOne(targetEntity = Rank.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	public Rank getRank()
+	{
+		return rank;
+	}
+	public void setRank(Rank rank)
+	{
+		this.rank = rank;
+	}
 	
 	public RankItem(long id, String name, String description, int positionInRank, Rank rank)
 	{
