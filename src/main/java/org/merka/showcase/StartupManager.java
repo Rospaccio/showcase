@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -38,6 +40,12 @@ public class StartupManager implements ServletContextListener
 	public void contextInitialized(ServletContextEvent event)
 	{
 		logger.info("\n\n\n inside contextInitialized! \n\n\n");
+		initDataBase();
+		setupORM();
+	}
+	
+	protected void initDataBase()
+	{
 		try
 		{
 			String tableCreationStatement = 
@@ -83,6 +91,15 @@ public class StartupManager implements ServletContextListener
 			logger.error("Impossible to start the in-memory database", e);
 			throw new RuntimeException(e);
 		}
+	}
+	
+	protected void setupORM()
+	{
+		// The parameter of this method call (persistenceUnitName) must match the one set in persistence.xml
+		// as the value of the value attribute of persistence-unit
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("org.merka.showcase.jpa");
+		
+		
 	}
 
 }
