@@ -11,7 +11,7 @@
 		
 		<sec:form-login login-page="/loginPage"
 			default-target-url="/welcome" 
-			authentication-failure-url="/fail"
+			authentication-failure-url="/loginPage?fail"
 			username-parameter="username" 
 			password-parameter="password" />
 			

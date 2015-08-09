@@ -32,6 +32,12 @@
 
 	<div class="container">
 
+		<c:if test="${errorMessage != null}">
+			<div class="alert alert-danger" role="alert">
+				${errorMessage}
+			</div>
+		</c:if>
+
 		<c:set value="/login" var="formTarget"></c:set>
 
 		<form class="form-signin" name="loginForm" method="POST"
