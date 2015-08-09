@@ -44,10 +44,12 @@
 			</div>
 
 			<div id="navbar" class="navbar-collapse collapse">
+			<!-- Note: the 'action' attribute is set to '/login', a url which is automatically
+			 	intercepted by spring-security that will try to authenticate the user -->
 				<form class="navbar-form navbar-right" name='loginForm'
 					action="<c:url value='/login' />" method='POST'>
 					<div class="form-group">
-						<input type="text" placeholder="Email" name="username"
+						<input type="text" placeholder="Username" name="username"
 							class="form-control">
 					</div>
 					<div class="form-group">
@@ -55,6 +57,9 @@
 							class="form-control">
 					</div>
 					<button type="submit" class="btn btn-success">Sign in</button>
+					<!-- Remember to always put this hidden field inside the login form
+						if the 'http' element of spring security config contains the 
+						'csrf' child (see spring-security.xml)-->
 					<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token}" />
 				</form>

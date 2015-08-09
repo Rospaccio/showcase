@@ -59,7 +59,8 @@ public class StartupManager implements ServletContextListener
 			String insertStatement2 = "insert into USER values ('rospo2', 'rospo2', true);";
 			
 			String insertStatement3 = "INSERT INTO user_roles (username, role) VALUES ('rospo2', 'ROLE_USER'); "
-					+ "INSERT INTO user_roles (username, role) VALUES ('rospo', 'ROLE_ADMIN');";
+					+ "INSERT INTO user_roles (username, role) VALUES ('rospo', 'ROLE_ADMIN');"
+					+ "INSERT INTO user_roles (username, role) VALUES ('rospo', 'ROLE_USER');";
 			
 			HsqlProperties p = new HsqlProperties();
 	        p.setProperty("server.database.0", "file:showcase");

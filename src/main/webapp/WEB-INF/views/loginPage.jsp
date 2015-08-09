@@ -18,8 +18,8 @@
 <link href="/resources/bootstrap-3.3.5-dist/css/bootstrap.min.css"
 	rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="/resources/css/signin.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="/resources/css/signin.css" rel="stylesheet">
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -32,21 +32,30 @@
 
 	<div class="container">
 
-		<form class="form-signin">
+		<c:set value="/login" var="formTarget"></c:set>
+
+		<form class="form-signin" name="loginForm" method="POST"
+			action="<c:url value='/login' />">
 			<h2 class="form-signin-heading">Please sign in</h2>
-			<label for="inputEmail" class="sr-only">Email address</label> <input
-				type="email" id="inputEmail" class="form-control"
-				placeholder="Email address" required autofocus> <label
-				for="inputPassword" class="sr-only">Password</label> <input
-				type="password" id="inputPassword" class="form-control"
-				placeholder="Password" required>
+			<label for="inputEmail" class="sr-only">Email address</label> 
+			<input
+				type="text" name="username" id="inputUsername" class="form-control"
+				placeholder="Username" required autofocus> </input> 
+			<label
+				for="inputPassword" class="sr-only">Password</label> 
+			<input
+				type="password" name="password" id="inputPassword" class="form-control"
+				placeholder="Password" required> </input>
 			<div class="checkbox">
-				<label> <input type="checkbox" value="remember-me">
+				<label> 
+					<input type="checkbox" value="remember-me" />
 					Remember me
 				</label>
 			</div>
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
 				in</button>
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 		</form>
 
 	</div>
