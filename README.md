@@ -44,7 +44,7 @@ While developing *Showcase* I kept in mind some basic needs that I always have i
 * a basic setup of the ORM of choice (Hibernate) must be in place in order to remind you all the basics and to act as a template for any new entity.
 
 # Something personal
-The main force behind the development of *Showcase* has been the bitter realization that I had several gaps in my technical background that I could not afford anymore. These are the kind of gaps that usually strike you while reading questions and answers on Stackoverflow. When I browse through topics and tags to find some questions to answer and increase my reputation I am always confronted with the fact that I actually know very little about anything at all.
+The main force behind the development of *Showcase* has been the bitter realization that I had several gaps in my technical background that I could not afford anymore. These are the kind of gaps that usually strike you while reading questions and answers on StackOverflow. When I browse through topics and tags to find some questions to answer and increase my reputation I am always confronted with the fact that I actually know very little about anything at all.
 
 # License
-*Showcase* is released under GPLv3 because I am deeply convinced that knowledge must be free for everyone and software is a form of knowledge. Stallman rules.
+*Showcase* is released under GPLv3 because knowledge must be free for everyone. Stallman rules.
