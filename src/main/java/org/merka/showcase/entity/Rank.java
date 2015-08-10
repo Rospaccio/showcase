@@ -1,10 +1,11 @@
 package org.merka.showcase.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -65,27 +66,48 @@ public class Rank
 		this.owner = owner;
 	}
 	
-//	public List<RankItem> getItems()
-//	{
-//		return items;
-//	}
-//	public void setItems(List<RankItem> items)
-//	{
-//		this.items = items;
-//	}
+	@OneToMany(mappedBy = "rank", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	public List<RankItem> getItems()
+	{
+		return items;
+	}
+	public void setItems(List<RankItem> items)
+	{
+		this.items = items;
+	}
 	
-	public Rank(){
-		
+	public Rank()
+	{
+		this.setItems(new ArrayList<RankItem>());
 	}
 	
 	public Rank(long id, String name, User owner, List<RankItem> items)
 	{
-		super();
+		this();
 		this.id = id;
 		this.name = name;
 		this.owner = owner;
 		this.items = items;
 	}
 	
+	public void appendRankItem(RankItem item)
+	{
+		int currentLastPosition = 0;
+		if(!getItems().isEmpty())
+		{
+			currentLastPosition = getItems().size() - 1;
+		}
+		
+		int newItemPosition = currentLastPosition +1;
+		item.setPositionInRank(newItemPosition);
+		item.setRank(this);
+		getItems().add(item);
+	}
 	
+	public static Rank create(String name, String description){
+		Rank rank = new Rank();
+		rank.setName(name);
+		rank.setDescription(description);
+		return rank;
+	}
 }

@@ -3,6 +3,7 @@ package org.merka.showcase.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -30,6 +31,8 @@ public class User
 	{
 		this.id = id;
 	}
+	
+	@Column(nullable = false)
 	public String getUsername()
 	{
 		return username;
@@ -59,5 +62,10 @@ public class User
 		this.username = username;
 	}
 	
+	public static User create(String username){
+		User user = new User();
+		user.setUsername(username);
+		return user;
+	}
 	
 }

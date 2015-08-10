@@ -8,10 +8,15 @@ import static org.junit.Assert.assertTrue;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
+
+import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.merka.showcase.StartupManager;
+import org.merka.showcase.entity.Rank;
+import org.merka.showcase.entity.RankItem;
 import org.merka.showcase.entity.User;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,5 +77,112 @@ public class PersistenceTest implements InitializingBean
 		// verifies the deletion
 		found = manager.find(User.class, testUser.getId());
 		assertNull(found);
+	}
+	
+	@Test
+	public void testPersistUserWithInnerRanks()
+	{
+		EntityManager manager = entityManagerFactory.createEntityManager();
+		
+		User user = new User();
+		user.setUsername("venerabile");
+		// adds some ranks
+		for(int i = 0; i < 3; i++){
+			Rank rank = new Rank();
+			rank.setName("rank#" + i);
+			rank.setDescription("A test rank");
+			user.getRanks().add(rank);
+		}
+		
+		manager.getTransaction().begin();
+		manager.persist(user);
+		manager.getTransaction().commit();
+		
+		assertNotNull(user.getId());
+		
+		User found = manager.find(User.class, user.getId());
+		assertNotNull(user);
+		assertEquals(user.getId(), found.getId());
+		assertTrue(! found.getRanks().isEmpty());
+		long rankId;
+		assertNotNull(rankId = found.getRanks().get(0).getId());
+		
+		// deletes all the data
+		manager.getTransaction().begin();
+		manager.remove(found);
+		manager.getTransaction().commit();
+		
+		found = manager.find(User.class, user.getId());
+		assertNull(found);
+		Rank checkRank = manager.find(Rank.class, rankId);
+		assertNull(checkRank);
+	}
+	
+	@Test(expected = Exception.class)
+	public void testFailingRankPersistence(){
+		Rank rank = new Rank();
+		
+		rank.setName("failing");
+		rank.setDescription("description");
+		// this null value causes a failure
+		rank.setOwner(null);
+		
+		EntityManager manager = entityManagerFactory.createEntityManager();
+		manager.getTransaction().begin();
+		manager.persist(rank);
+		manager.getTransaction().commit();
+	}
+	
+	// Exception expected because "rank" is not set
+	@Test(expected = PersistenceException.class)
+	public void testPersistRankItems()
+	{
+		EntityManager manager = entityManagerFactory.createEntityManager();
+		
+		RankItem item = RankItem.create("item", "a new item");
+		
+		manager.getTransaction().begin();
+		manager.persist(item);
+		manager.getTransaction().commit();
+		
+		assertNotNull(item.getId());
+		assertEquals(-1, item.getPositionInRank());
+	}
+	
+	@Test
+	public void testPersistUserRankAndItems()
+	{
+		User user = User.create("testUser");
+		EntityManager manager = entityManagerFactory.createEntityManager();
+		
+		manager.getTransaction().begin();
+		manager.persist(user);
+		manager.getTransaction().commit();
+		
+		Rank rank = Rank.create("rank#0", "A test rank");
+		rank.setOwner(user);
+		user.getRanks().add(rank);
+		
+		manager.getTransaction().begin();
+		manager.persist(rank);
+		manager.getTransaction().commit();
+		
+		RankItem item = RankItem.create("rankItem#0", "A test RankItem");
+		rank.appendRankItem(item);
+		
+		manager.getTransaction().begin();
+		manager.persist(item);
+		manager.getTransaction().commit();
+		
+		// retrieves the user
+		User found = manager.find(User.class, user.getId());
+		assertNotNull(found);
+		assertTrue(! found.getRanks().isEmpty());
+		assertTrue(! found.getRanks().get(0).getItems().isEmpty());
+		
+		// deletes all
+		manager.getTransaction().begin();
+		manager.remove(found);
+		manager.getTransaction().commit();
 	}
 }

@@ -4,15 +4,22 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "RANKITEM")
+@Table(name = "RANKITEM", 
+		uniqueConstraints = {
+			@UniqueConstraint( columnNames = { "positionInRank" })
+		})
 public class RankItem
 {
+	public static final int INVALID_POSITION = -1;
+	
 	private Long id;
 	private String name;
 	private String description;
@@ -31,7 +38,6 @@ public class RankItem
 		this.id = id;
 	}
 	
-	
 	public String getName()
 	{
 		return name;
@@ -40,7 +46,6 @@ public class RankItem
 	{
 		this.name = name;
 	}
-	
 	
 	public String getDescription()
 	{
@@ -51,7 +56,6 @@ public class RankItem
 		this.description = description;
 	}
 	
-	
 	public int getPositionInRank()
 	{
 		return positionInRank;
@@ -61,7 +65,8 @@ public class RankItem
 		this.positionInRank = positionInRank;
 	}
 	
-	@ManyToOne(targetEntity = Rank.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToOne(targetEntity = Rank.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, optional = false)
+	@JoinColumn(name = "RANK_ID")
 	public Rank getRank()
 	{
 		return rank;
@@ -71,9 +76,14 @@ public class RankItem
 		this.rank = rank;
 	}
 	
+	public RankItem()
+	{
+		setPositionInRank(INVALID_POSITION);
+	}
+	
 	public RankItem(long id, String name, String description, int positionInRank, Rank rank)
 	{
-		super();
+		this();
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -81,5 +91,11 @@ public class RankItem
 		this.rank = rank;
 	}
 	
-	
+	public static RankItem create(String name, String description)
+	{
+		RankItem item = new RankItem();
+		item.setName(name);
+		item.setDescription(description);
+		return item;
+	}
 }
