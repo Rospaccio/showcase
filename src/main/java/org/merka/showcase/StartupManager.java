@@ -19,6 +19,7 @@ import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class StartupManager implements ServletContextListener
 {
@@ -56,7 +57,7 @@ public class StartupManager implements ServletContextListener
 					// -----
 					+ "CREATE TABLE USER "
 					+ "(USERNAME VARCHAR(45) NOT NULL"
-					+ ", PASSWORD VARCHAR(45) NOT NULL"
+					+ ", PASSWORD VARCHAR(60) NOT NULL"
 					+ ", ENABLED BOOLEAN NOT NULL"
 					+ ", PRIMARY KEY (USERNAME));"
 					+ "CREATE TABLE user_roles ("
@@ -66,8 +67,12 @@ public class StartupManager implements ServletContextListener
 					+ ",  UNIQUE (role,username)"
 					+ ",  CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES user (username));";
 
-			String insertStatement = "insert into USER values ('rospo', 'rospo', true);";
-			String insertStatement2 = "insert into USER values ('rospo2', 'rospo2', true);";
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+			String password1 = encoder.encode("rospo");
+			String password2 = encoder.encode("rospo2");
+			
+			String insertStatement = "insert into USER values ('rospo', '" + password1 + "', true);";
+			String insertStatement2 = "insert into USER values ('rospo2', '" + password2 + "', true);";
 
 			String insertStatement3 = "INSERT INTO user_roles (username, role) VALUES ('rospo2', 'ROLE_USER'); "
 					+ "INSERT INTO user_roles (username, role) VALUES ('rospo', 'ROLE_ADMIN');"

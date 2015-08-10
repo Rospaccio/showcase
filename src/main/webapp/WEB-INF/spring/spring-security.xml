@@ -34,10 +34,15 @@
 			<sec:jdbc-user-service data-source-ref="dataSource"
 				users-by-username-query="select username, password, enabled from user where username=?"
 				authorities-by-username-query="select username, role from user_roles where username=?"/>
-		
+				
+				<sec:password-encoder hash="bcrypt">
+				</sec:password-encoder>
+				
+<!--			the following create an in memory user-service and add the specified users		 -->
 <!-- 			<sec:user-service> -->
 <!-- 				<sec:user name="rospo" password="rospo" authorities="ROLE_USER" /> -->
 <!-- 			</sec:user-service> -->
+
 		</sec:authentication-provider>
 	</sec:authentication-manager>
 
