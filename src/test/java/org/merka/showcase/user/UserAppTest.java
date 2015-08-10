@@ -1,11 +1,18 @@
 package org.merka.showcase.user;
 
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.merka.showcase.StartupManager;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -31,18 +38,32 @@ public class UserAppTest implements InitializingBean {
 	
 	@Autowired
 	WebApplicationContext wac;
-	
+		
+    @Autowired
+    private FilterChainProxy springSecurityFilterChain;
+    
 	MockMvc mockMvc;
 	
 	@Before
 	public void setup(){
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).addFilters(springSecurityFilterChain).build();
 	}
 		
 	@Test
 	public void testAccessProtectedResources() throws Exception 
 	{
-		mockMvc.perform(get("/")).andExpect(status().isOk());
+		mockMvc.perform(get("/welcome")).andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("http://localhost/loginPage"));
+	}
+	
+	@Test
+	public void testLogin() throws Exception
+	{
+		mockMvc.perform(post("/login")).andExpect(status().is4xxClientError());
+		
+//		mockMvc.perform(post("/login")
+//				.param("username", "rospo")
+//				.param("password", "rospo"))
+//				.andExpect(status().isOk());
 	}
 
 	@Override

@@ -14,9 +14,14 @@ public class WelcomeController
 	
 	@RequestMapping(value = "/welcome", method = RequestMethod.GET)
 	public String signIn(Locale locale, Model model)
-	{
+	{		
+		if(SecurityContextHolder.getContext() == null ||
+				SecurityContextHolder.getContext().getAuthentication() == null)
+		{
+			return "redirect:/loginPage?fail";
+		}
+
 		model.addAttribute("message", "Welcome back!");
-		
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
 		model.addAttribute("usernameLinkText", username);

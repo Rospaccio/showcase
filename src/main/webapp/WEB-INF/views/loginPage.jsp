@@ -38,8 +38,6 @@
 			</div>
 		</c:if>
 
-		<c:set value="/login" var="formTarget"></c:set>
-
 		<form class="form-signin" name="loginForm" method="POST"
 			action="<c:url value='/login' />">
 			<h2 class="form-signin-heading">Please sign in</h2>
