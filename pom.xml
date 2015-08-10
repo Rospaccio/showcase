@@ -135,6 +135,13 @@
 			<version>2.5</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- this is required to provide the tests running with mock mvc with all the necessary classes -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
@@ -179,7 +186,6 @@
 			<version>4.2.0.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
-
 
 	</dependencies>
 	<build>

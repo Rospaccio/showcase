@@ -12,6 +12,7 @@ import javax.persistence.PersistenceException;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.merka.showcase.StartupManager;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class) // this requires jUnit 4.9 or higher
 @ContextConfiguration(locations = {"classpath:/spring/test-persistence-context.xml"})
 public class PersistenceTest implements InitializingBean
