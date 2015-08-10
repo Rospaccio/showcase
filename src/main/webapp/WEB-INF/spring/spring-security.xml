@@ -33,7 +33,7 @@
 		
 			<sec:jdbc-user-service data-source-ref="dataSource"
 				users-by-username-query="select username, password, enabled from user where username=?"
-				authorities-by-username-query="select username, role from user_roles where username=?"/>
+				authorities-by-username-query="select username, role from user_role where username=?"/>
 				
 				<sec:password-encoder hash="bcrypt">
 				</sec:password-encoder>

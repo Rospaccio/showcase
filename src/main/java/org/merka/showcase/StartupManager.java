@@ -17,6 +17,7 @@ import org.hsqldb.server.Server;
 import org.hsqldb.server.ServerAcl.AclFormatException;
 import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.User;
+import org.merka.showcase.entity.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -87,15 +88,15 @@ public class StartupManager implements ServletContextListener
 			inMemoryServer.setProperties(p);
 			inMemoryServer.start();
 
-			Connection c = DriverManager.getConnection(
-					"jdbc:hsqldb:hsql://localhost:5222/showcase", "sa", "");
-			Statement statement = c.createStatement();
-			statement.execute(tableCreationStatement);
-			statement.execute(insertStatement);
-			statement.execute(insertStatement2);
-			statement.execute(insertStatement3);
+//			Connection c = DriverManager.getConnection(
+//					"jdbc:hsqldb:hsql://localhost:5222/showcase", "sa", "");
+//			Statement statement = c.createStatement();
+//			statement.execute(tableCreationStatement);
+//			statement.execute(insertStatement);
+//			statement.execute(insertStatement2);
+//			statement.execute(insertStatement3);
 		}
-		catch (SQLException | IOException | AclFormatException e)
+		catch (/*SQLException |*/ IOException | AclFormatException e)
 		{
 			logger.error("Impossible to start the in-memory database", e);
 			throw new RuntimeException(e);
@@ -111,19 +112,20 @@ public class StartupManager implements ServletContextListener
 				.createEntityManagerFactory("org.merka.showcase.jpa");
 		try
 		{
-			// adds an app User and a Rank for that user
-			User appUser = new User();
-			Rank rank = new Rank();
-			rank.setOwner(appUser);
-			rank.setName("Canzoni");
-			rank.setDescription("Le mie canzoni preferite");
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+			// adds the default test users
+			User devUser = User.create("rospo");
+			devUser.setPassword(encoder.encode("rospo"));
 			
-			appUser.setUsername("gonfiolo");
+			User devUser2 = User.create("rospo2");
+			devUser2.setPassword(encoder.encode("rospo2"));
+			
 			EntityManager manager = entityManagerFactory.createEntityManager();
 			manager.getTransaction().begin();
-			manager.persist(appUser);
-			manager.persist(rank);
+			manager.persist(devUser);
+			manager.persist(devUser2);
 			manager.getTransaction().commit();
+			
 		}
 		catch (Exception e)
 		{
