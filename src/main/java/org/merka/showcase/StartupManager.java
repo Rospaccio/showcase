@@ -20,6 +20,7 @@ import org.merka.showcase.entity.User;
 import org.merka.showcase.entity.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class StartupManager implements ServletContextListener
@@ -29,6 +30,8 @@ public class StartupManager implements ServletContextListener
 
 	private static Server		inMemoryServer;
 
+	private static EntityManagerFactory entityManagerFactory;
+	
 	public StartupManager()
 	{
 	}
@@ -102,13 +105,17 @@ public class StartupManager implements ServletContextListener
 			throw new RuntimeException(e);
 		}
 	}
-
+	
+	public static EntityManagerFactory getEntityManagerFactory(){
+		return entityManagerFactory;
+	}
+	
 	public void setupORM()
 	{
 		// The parameter of this method call (persistenceUnitName) must match
 		// the one set in persistence.xml
 		// as the value of the value attribute of persistence-unit
-		EntityManagerFactory entityManagerFactory = Persistence
+		entityManagerFactory = Persistence
 				.createEntityManagerFactory("org.merka.showcase.jpa");
 		try
 		{
