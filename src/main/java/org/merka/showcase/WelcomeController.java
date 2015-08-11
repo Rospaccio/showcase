@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import static org.merka.showcase.utils.ShowcaseUtils.*;
 
 @Controller
 public class WelcomeController
@@ -25,6 +26,6 @@ public class WelcomeController
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
 		model.addAttribute("usernameLinkText", username);
-		return "welcome";
+		return jspViewName("welcome");
 	}
 }

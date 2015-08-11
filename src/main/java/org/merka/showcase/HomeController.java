@@ -1,6 +1,7 @@
 package org.merka.showcase;
 
 import java.text.DateFormat;
+import static org.merka.showcase.utils.ShowcaseUtils.*;
 import java.util.Date;
 import java.util.Locale;
 
@@ -33,6 +34,12 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "home";
+		return jspViewName("home");
+	}
+	
+	@RequestMapping(path = "/probe")
+	public String probe()
+	{
+		return thymeleafViewName("probe");
 	}
 }

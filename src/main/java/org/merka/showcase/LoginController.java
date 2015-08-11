@@ -1,6 +1,6 @@
 package org.merka.showcase;
 
-import java.util.Locale;
+import static org.merka.showcase.utils.ShowcaseUtils.jspViewName;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,13 +22,6 @@ public class LoginController
 			logger.info("Login failed");
 			model.addAttribute("errorMessage", "Authentication failed: please check username and password");
 		}
-		return "loginPage";
+		return jspViewName("loginPage");
 	}
-
-//	@RequestMapping(value = "/loginPage?fail")
-//	public String failedLogin(Locale locale, Model model)
-//	{
-//
-//		return "loginPage";
-//	}
 }

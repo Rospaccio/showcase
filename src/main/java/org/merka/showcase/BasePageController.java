@@ -1,4 +1,4 @@
-package org.merka.showcase.user;
+package org.merka.showcase;
 
 import org.springframework.stereotype.Controller;
 
