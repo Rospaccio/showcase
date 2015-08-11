@@ -42,16 +42,14 @@
 				<a class="navbar-brand" href="#">Showcase</a>
 			</div>
 
-			
-
 			<div id="navbar" class="navbar-collapse collapse">
 				<!-- Note: the 'action' attribute is set to '/login', a url which is automatically
 			 	intercepted by spring-security that will try to authenticate the user -->
 				<form class="navbar-form navbar-right" name='logoutForm'
 					action="<c:url value='/logout' />" method='POST'>
-					
-					<a>${usernameLinkText}</a>
-					
+
+					<a href="/welcome">${usernameLinkText}</a>
+
 					<button type="submit" class="btn btn-success">Sign out</button>
 					<!-- Remember to always put this hidden field inside the login form
 						if the 'http' element of spring security config contains the 
@@ -59,16 +57,59 @@
 					<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token}" />
 				</form>
+				<!--/.navbar-collapse -->
 			</div>
-
-			<!--/.navbar-collapse -->
-			
-			<div class="well">
-				<div>
-					<h2>My Ranks</h2>
-				</div>
-			</div>
-			
 		</div>
 	</nav>
+
+	<div style="height: 20px;"></div>
+
+	<div class="container">
+		<div class="well">
+
+			<h2>My Ranks</h2>
+
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4">
+						<button class="btn btn-primary">
+							<span>Create a new Rank</span>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- A static table as reference -->
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Nr. of elements</th>
+						<th></th>
+					</thead>
+					<tbody>
+						<tr>
+							<td>This is static</td>
+							<td>This is static</td>
+							<td>This is static</td>
+							<td><button></button></td>
+						</tr>
+						<tr>
+							<td>This is static</td>
+							<td>This is static</td>
+							<td>This is static</td>
+						</tr>
+						<tr>
+							<td>This is static</td>
+							<td>This is static</td>
+							<td>This is static</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
 </body>

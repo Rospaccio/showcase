@@ -124,8 +124,14 @@ public class StartupManager implements ServletContextListener
 			manager.getTransaction().begin();
 			manager.persist(devUser);
 			manager.persist(devUser2);
-			manager.getTransaction().commit();
 			
+			for(int i = 0; i < 3; i++)
+			{
+				Rank r = Rank.create("Rank #" + i, "A Test rank");
+				r.setOwner(devUser);
+				manager.persist(r);
+			}
+			manager.getTransaction().commit();
 		}
 		catch (Exception e)
 		{
