@@ -42,14 +42,16 @@
 				<a class="navbar-brand" href="#">Showcase</a>
 			</div>
 
+			
+
 			<div id="navbar" class="navbar-collapse collapse">
 				<!-- Note: the 'action' attribute is set to '/login', a url which is automatically
 			 	intercepted by spring-security that will try to authenticate the user -->
 				<form class="navbar-form navbar-right" name='logoutForm'
 					action="<c:url value='/logout' />" method='POST'>
-
+					
 					<a>${usernameLinkText}</a>
-
+					
 					<button type="submit" class="btn btn-success">Sign out</button>
 					<!-- Remember to always put this hidden field inside the login form
 						if the 'http' element of spring security config contains the 
@@ -57,38 +59,16 @@
 					<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token}" />
 				</form>
-				<!--/.navbar-collapse -->
 			</div>
+
+			<!--/.navbar-collapse -->
+			
+			<div class="well">
+				<div>
+					<h2>My Ranks</h2>
+				</div>
+			</div>
+			
 		</div>
 	</nav>
-
-	<div style="height: 20px;"></div>
-
-	<div class="container">
-		<div class="well">
-			<div></div>
-			<div class="row">
-				<div class="col-md-4">
-					<div>
-						<span class="img-responsive img-rounded"
-							style="background-image: url(&quot;resources/images/angry-toad.jpg&quot;);">
-							<img class="img-responsive" alt=""
-							src="resources/images/angry-toad.jpg" />
-						</span>
-						<p>Toad is not amused.</p>
-					</div>
-				</div>
-
-				<div class="col-md-8">
-					<h2>Just ranks</h2>
-					<p>
-						You can <a href="/user/ranks">review your ranks</a> or <a>create
-							a new one</a>
-					</p>
-				</div>
-			</div>
-
-		</div>
-	</div>
-
 </body>
