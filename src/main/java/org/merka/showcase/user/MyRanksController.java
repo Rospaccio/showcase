@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -21,7 +22,13 @@ public class MyRanksController extends BasePageController
 {
 	@SuppressWarnings("unused")
 	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(MyRanksController.class);
-		
+	
+	@ModelAttribute(value = "newRank")
+	public Rank newRank()
+	{
+		return Rank.create("", "");
+	}
+	
 	@RequestMapping(value = "/")
 	public String ranks(Model model){
 		
