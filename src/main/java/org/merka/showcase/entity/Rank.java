@@ -56,7 +56,6 @@ public class Rank
 	}
 	
 	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, targetEntity = User.class, optional = false)
-	@JoinColumn(name = "OWNER_ID")
 	public User getOwner()
 	{
 		return owner;

@@ -32,32 +32,32 @@ public class HsqlDBStarterListener implements ServletContextListener {
 	
 	public void initDataBase() {
 		try {
-			String tableCreationStatement = "DROP TABLE IF EXISTS USER CASCADE; DROP TABLE IF EXISTS USER_ROLES;"
-					// -----
-					+ "CREATE TABLE USER "
-					+ "(USERNAME VARCHAR(45) NOT NULL"
-					+ ", PASSWORD VARCHAR(60) NOT NULL"
-					+ ", ENABLED BOOLEAN NOT NULL"
-					+ ", PRIMARY KEY (USERNAME));"
-					+ "CREATE TABLE user_roles ("
-					+ "  user_role_id int NOT NULL identity"
-					+ ",  username varchar(45) NOT NULL"
-					+ ",  role varchar(45) NOT NULL"
-					+ ",  UNIQUE (role,username)"
-					+ ",  CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES user (username));";
-
-			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-			String password1 = encoder.encode("rospo");
-			String password2 = encoder.encode("rospo2");
-
-			String insertStatement = "insert into USER values ('rospo', '"
-					+ password1 + "', true);";
-			String insertStatement2 = "insert into USER values ('rospo2', '"
-					+ password2 + "', true);";
-
-			String insertStatement3 = "INSERT INTO user_roles (username, role) VALUES ('rospo2', 'ROLE_USER'); "
-					+ "INSERT INTO user_roles (username, role) VALUES ('rospo', 'ROLE_ADMIN');"
-					+ "INSERT INTO user_roles (username, role) VALUES ('rospo', 'ROLE_USER');";
+//			String tableCreationStatement = "DROP TABLE IF EXISTS USER CASCADE; DROP TABLE IF EXISTS USER_ROLES;"
+//					// -----
+//					+ "CREATE TABLE USER "
+//					+ "(USERNAME VARCHAR(45) NOT NULL"
+//					+ ", PASSWORD VARCHAR(60) NOT NULL"
+//					+ ", ENABLED BOOLEAN NOT NULL"
+//					+ ", PRIMARY KEY (USERNAME));"
+//					+ "CREATE TABLE user_roles ("
+//					+ "  user_role_id int NOT NULL identity"
+//					+ ",  username varchar(45) NOT NULL"
+//					+ ",  role varchar(45) NOT NULL"
+//					+ ",  UNIQUE (role,username)"
+//					+ ",  CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES user (username));";
+//
+//			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+//			String password1 = encoder.encode("rospo");
+//			String password2 = encoder.encode("rospo2");
+//
+//			String insertStatement = "insert into USER values ('rospo', '"
+//					+ password1 + "', true);";
+//			String insertStatement2 = "insert into USER values ('rospo2', '"
+//					+ password2 + "', true);";
+//
+//			String insertStatement3 = "INSERT INTO user_roles (username, role) VALUES ('rospo2', 'ROLE_USER'); "
+//					+ "INSERT INTO user_roles (username, role) VALUES ('rospo', 'ROLE_ADMIN');"
+//					+ "INSERT INTO user_roles (username, role) VALUES ('rospo', 'ROLE_USER');";
 
 			HsqlProperties p = new HsqlProperties();
 			p.setProperty("server.database.0", "file:showcase");

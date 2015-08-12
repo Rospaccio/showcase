@@ -5,12 +5,15 @@ import static org.merka.showcase.utils.ShowcaseUtils.thymeleafViewName;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 import org.merka.showcase.BasePageController;
 import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.User;
 import org.merka.showcase.listener.StartupManager;
+import org.merka.showcase.utils.ShowcaseUtils;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,17 +29,31 @@ public class MyRanksController extends BasePageController
 	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(MyRanksController.class);
 	
 	@ModelAttribute(value = "newRank")
-	public Rank newRank()
+	public Rank newRank(@ModelAttribute("user") User user)
 	{
-		return Rank.create("", "");
+		Rank rank = Rank.create("", "");
+		return rank;
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public String putNewRank(
 			Model model, 
-			@ModelAttribute("newRank") Rank newRank)
+			@ModelAttribute("newRank") Rank newRank,
+			@ModelAttribute("user") User user)
 	{
 		logger.info("Rank: " + newRank.getName() + ", " + newRank.getDescription());
+		
+		EntityManager manager = StartupManager.getEntityManagerFactory().createEntityManager();
+		
+		User freshUser = manager.find(User.class, user.getId());
+		
+		freshUser.getRanks().add(newRank);
+		newRank.setOwner(freshUser);
+		manager.getTransaction().begin();
+		manager.persist(freshUser);
+		manager.persist(newRank);
+		manager.getTransaction().commit();
+		
 		return thymeleafViewName("user/ranks");
 	}
 	
@@ -54,6 +71,7 @@ public class MyRanksController extends BasePageController
 		
 		EntityManager manager = StartupManager.getEntityManagerFactory().createEntityManager();
 		User user = manager.createQuery("select u from User u where u.username = :username", User.class).setParameter("username", username).getResultList().get(0);
+		manager.close();
 		return user;
 	}
 	
@@ -65,6 +83,7 @@ public class MyRanksController extends BasePageController
 		
 		EntityManager manager = StartupManager.getEntityManagerFactory().createEntityManager();
 		List<Rank> results = manager.createQuery("SELECT r FROM Rank r where r.owner = :user", Rank.class).setParameter("user", user) .getResultList();
+		manager.close();
 		return results;
 	}
 }
