@@ -7,7 +7,7 @@
 
 <!-- 	<bean name="persistence" class="javax.persistence.Persistence"></bean> -->
 	
-<!-- 	<bean name="entityManagerFactory" factory-bean="persistence" factory-method="createEntityManagerFactory"> -->
+<!-- 	<bean name="entityManagerFactory" class="javax.persistence.Persistence" factory-method="createEntityManagerFactory"> -->
 <!-- 		<constructor-arg index="0" value="org.merka.showcase.jpa"></constructor-arg> -->
 <!-- 	</bean> -->
 
