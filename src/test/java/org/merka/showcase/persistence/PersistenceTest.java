@@ -15,11 +15,12 @@ import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.merka.showcase.StartupManager;
 import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.RankItem;
 import org.merka.showcase.entity.User;
 import org.merka.showcase.entity.UserRole;
+import org.merka.showcase.listener.HsqlDBStarterListener;
+import org.merka.showcase.listener.StartupManager;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -32,6 +33,17 @@ public class PersistenceTest implements InitializingBean
 {
 	private static EntityManagerFactory entityManagerFactory;
 	
+	@Autowired
+	HsqlDBStarterListener hsqlStarter;
+	
+	public HsqlDBStarterListener getHsqlStarter() {
+		return hsqlStarter;
+	}
+
+	public void setHsqlStarter(HsqlDBStarterListener hsqlStarter) {
+		this.hsqlStarter = hsqlStarter;
+	}
+
 	@Autowired
 	StartupManager startupManager;
 	
@@ -48,7 +60,7 @@ public class PersistenceTest implements InitializingBean
 	@Override
 	public void afterPropertiesSet()
 	{
-		startupManager.initDataBase();
+		hsqlStarter.initDataBase();
 		entityManagerFactory = Persistence.createEntityManagerFactory("org.merka.showcase.jpa");		
 	}
 	

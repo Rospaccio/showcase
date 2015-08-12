@@ -7,9 +7,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.merka.showcase.BasePageController;
-import org.merka.showcase.StartupManager;
 import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.User;
+import org.merka.showcase.listener.StartupManager;
 import org.slf4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;

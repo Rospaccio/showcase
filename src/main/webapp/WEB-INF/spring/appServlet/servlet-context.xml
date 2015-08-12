@@ -48,7 +48,7 @@
 	<beans:bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
 		<beans:property name="templateResolver" ref="templateResolver" />
 	</beans:bean>
-	
+
 	<!-- Thymeleaf _ end -->
 
 	<context:component-scan base-package="org.merka.showcase" />

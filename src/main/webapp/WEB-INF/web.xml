@@ -7,11 +7,15 @@
 		and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+		<param-value>
+			/WEB-INF/spring/root-context.xml
+			<!-- Loads Spring Security config file -->
+			/WEB-INF/spring/spring-security.xml
+		</param-value>
 	</context-param>
 
 	<listener>
-		<listener-class>org.merka.showcase.StartupManager</listener-class>
+		<listener-class>org.merka.showcase.listener.HsqlDBStarterListener</listener-class>
 	</listener>
 
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
@@ -19,6 +23,10 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+	<listener>
+		<listener-class>org.merka.showcase.listener.StartupManager</listener-class>
+	</listener>
+	
 	<!-- Processes application requests -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
@@ -35,15 +43,6 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
-	<!-- Spring Security -->
-	<!-- Loads Spring Security config file -->
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>
-			/WEB-INF/spring/spring-security.xml
-		</param-value>
-	</context-param>
 
 	<!-- Spring Security -->
 	<filter>

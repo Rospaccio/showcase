@@ -5,7 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.merka.showcase.StartupManager;
+import org.merka.showcase.listener.HsqlDBStarterListener;
+import org.merka.showcase.listener.StartupManager;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,6 +34,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		, "classpath:/spring/test-persistence-context.xml"})
 public class UserAppTest implements InitializingBean {
 
+	@Autowired
+	HsqlDBStarterListener hsqlStarter;
+	
 	@Autowired
 	StartupManager startupManager;
 	
@@ -69,7 +73,7 @@ public class UserAppTest implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception 
 	{
-		startupManager.initDataBase();
+		hsqlStarter.initDataBase();
 		startupManager.setupORM();
 	}
 
