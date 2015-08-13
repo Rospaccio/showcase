@@ -75,20 +75,26 @@
 					</div>
 				</div>
 			</div>
-
 			<!-- A static table as reference -->
 			<div class="table-responsive">
 				<table class="table table-striped">
 					<thead>
 						<th>Name</th>
 						<th>Description</th>
-						<th></th>
+						<th>Actions</th>
 					</thead>
 					<tbody>
-						<tr th:each="rank : ${ranks}">
+						<tr th:each="rank, stat : ${ranks}">
 							<td th:text="${rank.name}">This is static</td>
 							<td th:text="${rank.description}">This is static</td>
-							<td></td>
+							<td>
+<!-- 								<form action="@{/user/ranks}" method="post" th:object="${ranks}"> -->
+<!-- 									<input type="text" id="rankId" name="rankId" th:field="*{ranks[__${stat.index}__].id}"></input> -->
+<!-- 									<button type="submit"> -->
+<!-- 										<span>Delete</span> -->
+<!-- 									</button> -->
+<!-- 								</form> -->
+							</td>
 						</tr>
 					</tbody>
 				</table>

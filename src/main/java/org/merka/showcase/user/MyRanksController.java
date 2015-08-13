@@ -10,8 +10,6 @@ import javax.persistence.EntityManagerFactory;
 import org.merka.showcase.BasePageController;
 import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.User;
-import org.merka.showcase.listener.StartupManager;
-import org.merka.showcase.utils.ShowcaseUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -57,11 +56,34 @@ public class MyRanksController extends BasePageController
 		manager.persist(newRank);
 		manager.getTransaction().commit();
 		
+		List<Rank> updatedRanks = ranks(user);
+		model.addAttribute("ranks", updatedRanks);
+		
+		return thymeleafViewName("user/ranks");
+	}
+	
+	@RequestMapping(path = "/delete", method = RequestMethod.POST)
+	public String deleteRank(
+			Model model,
+			@RequestParam(name = "id") String rankId,
+			@ModelAttribute("user") User user)
+	{
+		EntityManager manager = entityManagerFactory.createEntityManager();
+		
+		Long id = Long.parseLong(rankId);
+		manager.getTransaction().begin();
+		Rank toDelete = manager.find(Rank.class, id);
+		manager.remove(toDelete);
+		manager.getTransaction().commit();
+		
+		List<Rank> updatedRanks = ranks(user);
+		model.addAttribute("ranks", updatedRanks);
+		
 		return thymeleafViewName("user/ranks");
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView ranks(Model model){
+	public ModelAndView getRanks(Model model){
 		
 		String view = thymeleafViewName("user/ranks");
 		return new ModelAndView(view, "command", model);
