@@ -50,8 +50,9 @@
 				<button type="submit" class="btn btn-success">Sign out</button>
 				<!-- Remember to always put this hidden field inside the login form
 						if the 'http' element of spring security config contains the 
-						'csrf' child (see spring-security.xml)--> <input type="hidden"
-					th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+						'csrf' child (see spring-security.xml)-->
+				<input type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}" />
 			</form>
 			<!--/.navbar-collapse -->
 		</div>
@@ -88,17 +89,37 @@
 							<td th:text="${rank.name}">This is static</td>
 							<td th:text="${rank.description}">This is static</td>
 							<td>
-<!-- 								<form action="@{/user/ranks}" method="post" th:object="${ranks}"> -->
-<!-- 									<input type="text" id="rankId" name="rankId" th:field="*{ranks[__${stat.index}__].id}"></input> -->
-<!-- 									<button type="submit"> -->
-<!-- 										<span>Delete</span> -->
-<!-- 									</button> -->
-<!-- 								</form> -->
+
+								<form th:action="@{/user/ranks/delete}" method="post"
+									style="float: left;">
+									<input type="hidden" id="id" name="id" th:value="${rank.id}"></input>
+									<button class="btn btn-danger" type="submit">
+										<span>Delete</span>
+									</button>
+								</form>
+								<form th:action="@{/user/ranks/view}" method="post"
+									style="float: left;">
+									<input type="hidden" id="id" name="id" th:value="${rank.id}"></input>
+									<button class="btn btn-info" type="submit">
+										<span>View</span>
+									</button>
+								</form>
+
 							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
+
+			<!-- 				
+	Iterative form demo 
+-->
+<!-- 			<div th:each="rank, stat : ${ranks}" style="display: none;"> -->
+<!-- 				<form action="@{/user/ranks}" -->
+<!-- 					method="post" > -->
+<!-- 					<input type="text" th:value="${rank.id}"></input> -->
+<!-- 				</form> -->
+<!-- 			</div> -->
 
 			<!-- Modal -->
 			<div class="modal fade" id="rankModal" tabindex="-1" role="dialog"
@@ -119,15 +140,14 @@
 
 							<div class="modal-body">
 								<div class="form-group">
-									<label for="name">Name</label> 
-									<input type="text"
+									<label for="name">Name</label> <input type="text"
 										class="form-control" id="name" th:field="*{name}"> </input>
 								</div>
 
 								<div class="form-group">
-									<label for="description">Description</label> 
-									<input type="text"
-										class="form-control" id="description" th:field="*{description}"> </input>
+									<label for="description">Description</label> <input type="text"
+										class="form-control" id="description"
+										th:field="*{description}"> </input>
 								</div>
 							</div>
 							<div class="modal-footer">
