@@ -23,9 +23,9 @@ local.properties
 .springBeans
 
 # HSQLDB files
-showcase..lck
-showcase..log
-showcase..script
+showcase.lck
+showcase.log
+showcase.script
 showcase.properties
 
 # Eclipse Core
