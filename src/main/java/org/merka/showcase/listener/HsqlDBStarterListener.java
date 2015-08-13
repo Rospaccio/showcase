@@ -10,6 +10,7 @@ import org.hsqldb.server.Server;
 import org.hsqldb.server.ServerAcl.AclFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class HsqlDBStarterListener implements ServletContextListener {
@@ -17,6 +18,9 @@ public class HsqlDBStarterListener implements ServletContextListener {
 	private static final Logger logger = LoggerFactory.getLogger(HsqlDBStarterListener.class);
 	
 	private static Server inMemoryServer;
+	
+	@Value("${persistence.unit.database.name}")
+	String databaseName;
 	
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
@@ -60,8 +64,8 @@ public class HsqlDBStarterListener implements ServletContextListener {
 //					+ "INSERT INTO user_roles (username, role) VALUES ('rospo', 'ROLE_USER');";
 
 			HsqlProperties p = new HsqlProperties();
-			p.setProperty("server.database.0", "file:showcase");
-			p.setProperty("server.dbname.0", "showcase");
+			p.setProperty("server.database.0", "file:" + databaseName);
+			p.setProperty("server.dbname.0", databaseName);
 			p.setProperty("server.port", "5222");
 
 			inMemoryServer = new Server();

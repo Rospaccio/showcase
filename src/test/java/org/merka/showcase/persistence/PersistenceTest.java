@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@Ignore
 @RunWith(SpringJUnit4ClassRunner.class) // this requires jUnit 4.9 or higher
 @ContextConfiguration(locations = {"classpath:/spring/test-persistence-context.xml"})
 public class PersistenceTest implements InitializingBean
@@ -61,7 +60,7 @@ public class PersistenceTest implements InitializingBean
 	public void afterPropertiesSet()
 	{
 		hsqlStarter.initDataBase();
-		entityManagerFactory = Persistence.createEntityManagerFactory("org.merka.showcase.jpa");		
+		entityManagerFactory = Persistence.createEntityManagerFactory("org.merka.showcase.test.jpa");		
 	}
 	
 	@Test
@@ -76,7 +75,7 @@ public class PersistenceTest implements InitializingBean
 		manager.persist(testUser);
 		manager.getTransaction().commit();
 		
-		assertEquals(1L, testUser.getId());
+		assertNotNull(testUser.getId());
 		
 		// retrieves the persisted user with the manager
 		User found = manager.find(User.class, testUser.getId());

@@ -16,4 +16,22 @@
 			<property name="hibernate.hbm2ddl.auto" value="validate" />
 		</properties>
 	</persistence-unit>
+
+	<!-- 
+		Same as the previous one (except for the database name), but used in unit test not to 
+		corrupt the content of the development DB
+	-->
+	<persistence-unit name="org.merka.showcase.test.jpa">
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:hsql://localhost:5222/showcase-test" />
+			<property name="javax.persistence.jdbc.user" value="sa" />
+			<property name="javax.persistence.jdbc.password" value="" />
+
+			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
+
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+		</properties>
+	</persistence-unit>
 </persistence>

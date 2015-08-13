@@ -6,10 +6,17 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+	<bean id="placeholder" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/persistence-test.properties</value>
+			</list>
+		</property>
+	</bean>
+
 	<bean id="hsqlStarter" class="org.merka.showcase.listener.HsqlDBStarterListener"></bean>
 
-	<bean id="startupManager" class="org.merka.showcase.StartupManager">
+	<bean id="startupManager" class="org.merka.showcase.listener.StartupManager">
 	</bean>
 	
-
 </beans>
