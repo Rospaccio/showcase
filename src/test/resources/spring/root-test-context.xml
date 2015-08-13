@@ -2,7 +2,23 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<bean id="placeholder"
+		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/showcase-test.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="entityManagerFactory" class="javax.persistence.Persistence"
+		factory-method="createEntityManagerFactory">
+		<constructor-arg index="0" value="org.merka.showcase.test.jpa"></constructor-arg>
+	</bean>
 	
+	<bean id="startupManager" class="org.merka.showcase.listener.StartupManager"></bean>
+
 </beans>

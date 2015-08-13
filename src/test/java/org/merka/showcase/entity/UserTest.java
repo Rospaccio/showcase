@@ -23,4 +23,18 @@ public class UserTest {
 		assertEquals("ROLE_USER", role.getRole());
 	}
 
+	@Test
+	public void testHasRole()
+	{
+		User user = User.create("bombolo");
+		assertTrue(user.hasRole(UserRole.ROLE_USER));
+		user.addRole(UserRole.ROLE_USER);
+		assertEquals(1, user.getRoles().size());
+		
+		user.addRole(UserRole.ROLE_ADMIN);
+		assertTrue(user.hasRole(UserRole.ROLE_ADMIN));
+		
+		user.removeRole(UserRole.ROLE_ADMIN);
+		assertTrue(! user.hasRole(UserRole.ROLE_ADMIN));
+	}
 }

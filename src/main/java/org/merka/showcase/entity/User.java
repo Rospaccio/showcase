@@ -3,6 +3,7 @@ package org.merka.showcase.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -99,10 +100,20 @@ public class User implements Serializable
 	
 	public void addRole(String roleName)
 	{
+		if(hasRole(roleName))
+		{
+			return;
+		}
 		UserRole role = new UserRole();
 		role.setRole(roleName);
 		role.setUser(this);
 		getRoles().add(role);
+	}
+	
+	public void removeRole(String roleName)
+	{
+		List<UserRole> found = getRoles().stream().filter((role) -> role.getRole().equals(roleName)).collect(Collectors.toList());
+		found.stream().forEach((role) -> this.getRoles().remove(role));
 	}
 	
 	public static User create(String username){
@@ -110,6 +121,16 @@ public class User implements Serializable
 		user.setUsername(username);
 		user.addRole(UserRole.ROLE_USER);
 		return user;
+	}
+	public void addRank(Rank rank) {
+		this.getRanks().add(rank);
+		rank.setOwner(this);
+	}
+	
+	public boolean hasRole(String roleName) {
+		return getRoles().stream().anyMatch(
+				(role) -> role.getRole().equals(roleName)
+				);
 	}
 	
 }

@@ -36,7 +36,7 @@ public class StartupManager implements ServletContextListener {
 			.getLogger(StartupManager.class);
 
 	@Autowired
-	private static EntityManagerFactory entityManagerFactory;
+	EntityManagerFactory entityManagerFactory;
 
 	public StartupManager() {
 	}
@@ -55,12 +55,12 @@ public class StartupManager implements ServletContextListener {
 		
 		entityManagerFactory = factory;
 
-		setupORM();
+		// setupORM();
 	}
 
-	public static EntityManagerFactory getEntityManagerFactory() {
-		return entityManagerFactory;
-	}
+//	public static EntityManagerFactory getEntityManagerFactory() {
+//		return entityManagerFactory;
+//	}
 
 	/**
 	 * Populates the database with the default development data

@@ -28,6 +28,9 @@ public class MyRanksController extends BasePageController
 {
 	private static final Logger logger = org.slf4j.LoggerFactory.getLogger(MyRanksController.class);
 	
+	@Autowired
+	EntityManagerFactory entityManagerFactory;
+	
 	@ModelAttribute(value = "newRank")
 	public Rank newRank(@ModelAttribute("user") User user)
 	{
@@ -43,7 +46,7 @@ public class MyRanksController extends BasePageController
 	{
 		logger.info("Rank: " + newRank.getName() + ", " + newRank.getDescription());
 		
-		EntityManager manager = StartupManager.getEntityManagerFactory().createEntityManager();
+		EntityManager manager = entityManagerFactory.createEntityManager();
 		
 		User freshUser = manager.find(User.class, user.getId());
 		
@@ -69,7 +72,7 @@ public class MyRanksController extends BasePageController
 	{
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		EntityManager manager = StartupManager.getEntityManagerFactory().createEntityManager();
+		EntityManager manager = entityManagerFactory.createEntityManager();
 		User user = manager.createQuery("select u from User u where u.username = :username", User.class).setParameter("username", username).getResultList().get(0);
 		manager.close();
 		return user;
@@ -81,7 +84,7 @@ public class MyRanksController extends BasePageController
 		// retrieves all the ranks of the user
 		// all in line, I know it's ugly and evil but this is just a trial
 		
-		EntityManager manager = StartupManager.getEntityManagerFactory().createEntityManager();
+		EntityManager manager = entityManagerFactory.createEntityManager();
 		List<Rank> results = manager.createQuery("SELECT r FROM Rank r where r.owner = :user", Rank.class).setParameter("user", user) .getResultList();
 		manager.close();
 		return results;

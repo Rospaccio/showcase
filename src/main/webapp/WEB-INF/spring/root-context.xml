@@ -5,7 +5,13 @@
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
-<!-- 	<bean name="persistence" class="javax.persistence.Persistence"></bean> -->
+	<bean id="placeholder" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/showcase.properties</value>
+			</list>
+		</property>
+	</bean>
 	
 	<bean 
 		name="entityManagerFactory" 

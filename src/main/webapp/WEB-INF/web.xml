@@ -13,6 +13,11 @@
 			/WEB-INF/spring/spring-security.xml
 		</param-value>
 	</context-param>
+	
+	<context-param>
+		<param-name>persistence.unit.database.name</param-name>
+		<param-value>showcase</param-value>
+	</context-param>
 
 	<listener>
 		<listener-class>org.merka.showcase.listener.HsqlDBStarterListener</listener-class>
