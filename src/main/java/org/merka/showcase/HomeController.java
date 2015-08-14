@@ -36,10 +36,4 @@ public class HomeController {
 		
 		return jspViewName("home");
 	}
-	
-	@RequestMapping(path = "/probe")
-	public String probe()
-	{
-		return thymeleafViewName("probe");
-	}
 }
