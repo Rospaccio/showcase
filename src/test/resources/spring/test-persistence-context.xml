@@ -15,8 +15,8 @@
 	</bean>
 
 	<bean id="hsqlStarter" class="org.merka.showcase.listener.HsqlDBStarterListener"></bean>
-
-	<bean id="startupManager" class="org.merka.showcase.listener.StartupManager">
+	
+	<bean id="userService" class="org.merka.showcase.service.UserService">
 	</bean>
 	
 </beans>

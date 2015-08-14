@@ -25,6 +25,14 @@ public class HsqlDBStarterListener implements ServletContextListener {
 	@Value("${persistence.unit.database.name}")
 	String databaseName;
 	
+	public String getDatabaseName() {
+		return databaseName;
+	}
+
+	public void setDatabaseName(String databaseName) {
+		this.databaseName = databaseName;
+	}
+
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		logger.info("\n\n\n");
@@ -84,14 +92,9 @@ public class HsqlDBStarterListener implements ServletContextListener {
 			inMemoryServer.setProperties(p);
 			inMemoryServer.start();
 
-			// Connection c = DriverManager.getConnection(
-			// "jdbc:hsqldb:hsql://localhost:5222/showcase", "sa", "");
-			// Statement statement = c.createStatement();
-			// statement.execute(tableCreationStatement);
-			// statement.execute(insertStatement);
-			// statement.execute(insertStatement2);
-			// statement.execute(insertStatement3);
-		} catch (/* SQLException | */IOException | AclFormatException e) {
+		} 
+		catch (/* SQLException | */IOException | AclFormatException e) 
+		{
 			logger.error("Impossible to start the in-memory database", e);
 			throw new RuntimeException(e);
 		}

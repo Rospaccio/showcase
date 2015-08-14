@@ -5,19 +5,26 @@
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
-	<bean id="placeholder" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+	<bean id="placeholder"
+		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
 		<property name="locations">
 			<list>
 				<value>classpath:/showcase.properties</value>
 			</list>
 		</property>
 	</bean>
-	
-	<bean 
-		name="entityManagerFactory" 
-		class="javax.persistence.Persistence" 
+
+	<bean name="sessionUserInjectorFilter" class="org.merka.showcase.filter.SessionUserInjectorFilter">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
+	</bean>
+
+	<bean name="entityManagerFactory" class="javax.persistence.Persistence"
 		factory-method="createEntityManagerFactory">
 		<constructor-arg index="0" value="org.merka.showcase.jpa"></constructor-arg>
+	</bean>
+	
+	<bean id="userService" class="org.merka.showcase.service.UserService" scope="singleton">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
 	</bean>
 
 </beans>

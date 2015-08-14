@@ -15,33 +15,34 @@ import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.User;
 import org.merka.showcase.entity.UserRole;
 import org.merka.showcase.listener.HsqlDBStarterListener;
+import org.merka.showcase.listener.StartupManager;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/spring/test-persistence-context.xml" })
+@ContextConfiguration(locations = {"classpath:/spring/test-persistence-context.xml"})
 public class UserPersistenceTest implements InitializingBean {
 
 	static EntityManagerFactory factory;
 
-	@Autowired
-	HsqlDBStarterListener hsqlStarter;
+//	@Autowired
+	static HsqlDBStarterListener hsqlStarter;
 	
-//	@BeforeClass
-//	public static void staticSetup() {
-//		hsqlStarter.initDataBase();
-//		factory = Persistence
-//				.createEntityManagerFactory("org.merka.showcase.test.jpa");
-//	}
+	@BeforeClass
+	public static void staticSetup() {
+		hsqlStarter = new HsqlDBStarterListener();
+		hsqlStarter.setDatabaseName("showcase-test");
+		hsqlStarter.initDataBase();
+		factory = Persistence.createEntityManagerFactory("org.merka.showcase.test.jpa");
+	}
 
 	@Override
 	public void afterPropertiesSet()
 	{
-		hsqlStarter.initDataBase();
-		factory = Persistence.createEntityManagerFactory("org.merka.showcase.test.jpa");		
+//		StartupManager startupManager = new StartupManager();
+//		startupManager.setEntityManagerFactory(factory);
 	}
 	
 	@AfterClass

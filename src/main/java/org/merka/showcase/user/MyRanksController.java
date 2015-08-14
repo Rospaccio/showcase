@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.merka.showcase.BasePageController;
 import org.merka.showcase.entity.Rank;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping(path = "/user/ranks/**")
@@ -39,7 +43,7 @@ public class MyRanksController extends BasePageController
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String putNewRank(Model model, @ModelAttribute("newRank") Rank newRank,
+	public View putNewRank(Model model, @ModelAttribute("newRank") Rank newRank,
 			@ModelAttribute("user") User user)
 	{
 		logger.info("Rank: " + newRank.getName() + ", " + newRank.getDescription());
@@ -55,13 +59,12 @@ public class MyRanksController extends BasePageController
 		manager.persist(newRank);
 		manager.getTransaction().commit();
 
-		updateModel(model, freshUser);
-
-		return thymeleafViewName("user/ranks");
+		return new RedirectView("/user/ranks");
+		//return thymeleafViewName("user/ranks");
 	}
 
 	@RequestMapping(path = "/delete", method = RequestMethod.POST)
-	public String deleteRank(Model model, @RequestParam(name = "id") String rankId,
+	public View deleteRank(Model model, @RequestParam(name = "id") String rankId,
 			@ModelAttribute("user") User user)
 	{
 		EntityManager manager = entityManagerFactory.createEntityManager();
@@ -72,24 +75,25 @@ public class MyRanksController extends BasePageController
 		manager.remove(toDelete);
 		manager.getTransaction().commit();
 
-		updateModel(model, user);
-
-		return thymeleafViewName("user/ranks");
+		RedirectView redirectView = new RedirectView("/user/ranks");
+		return redirectView;
+//		return thymeleafViewName("user/ranks");
 	}
 
-	private void updateModel(Model model, User user)
-	{
-		EntityManager manager = entityManagerFactory.createEntityManager();
-
-		User freshUser = manager.find(User.class, user.getId());
-		List<Rank> updatedRanks = ranks(freshUser);
-		model.addAttribute("ranks", updatedRanks);
-		model.addAttribute("holder", new TempIdHolder(updatedRanks));
-	}
+//	private void updateModel(Model model, User user)
+//	{
+//		EntityManager manager = entityManagerFactory.createEntityManager();
+//
+//		User freshUser = manager.find(User.class, user.getId());
+//		List<Rank> updatedRanks = ranks(freshUser);
+//		model.addAttribute("ranks", updatedRanks);
+//	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView getRanks(Model model)
+	public ModelAndView getRanks(Model model, HttpServletRequest request)
 	{
+		Object userObject = request.getSession().getAttribute("CURRENT_USER");
+		logger.info("User found in session: " + userObject);
 		String view = thymeleafViewName("user/ranks");
 		return new ModelAndView(view, "command", model);
 	}
@@ -107,14 +111,6 @@ public class MyRanksController extends BasePageController
 		return user;
 	}
 
-	@ModelAttribute(value = "holder")
-	private TempIdHolder holder(@ModelAttribute("ranks") List<Rank> ranks)
-	{
-		TempIdHolder holder = new TempIdHolder();
-		holder.setRanks(ranks);
-		return holder;
-	}
-
 	@ModelAttribute(value = "ranks")
 	private List<Rank> ranks(@ModelAttribute User user)
 	{
@@ -127,42 +123,5 @@ public class MyRanksController extends BasePageController
 				.setParameter("user", user).getResultList();
 		manager.close();
 		return results;
-	}
-
-	public class TempIdHolder
-	{
-		private String	rankId;
-
-		public String getRankId()
-		{
-			return rankId;
-		}
-
-		public void setRankId(String rankId)
-		{
-			this.rankId = rankId;
-		}
-
-		List<Rank>	ranks;
-
-		public List<Rank> getRanks()
-		{
-			return ranks;
-		}
-
-		public void setRanks(List<Rank> ranks)
-		{
-			this.ranks = ranks;
-		}
-
-		public TempIdHolder()
-		{
-
-		}
-
-		public TempIdHolder(List<Rank> ranks)
-		{
-			setRanks(ranks);
-		}
 	}
 }

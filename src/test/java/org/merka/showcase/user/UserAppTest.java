@@ -4,12 +4,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletContextEvent;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.merka.showcase.entity.User;
+import org.merka.showcase.filter.SessionUserInjectorFilter;
 import org.merka.showcase.listener.HsqlDBStarterListener;
 import org.merka.showcase.listener.StartupManager;
 import org.springframework.beans.factory.InitializingBean;
@@ -34,17 +40,19 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 		, "classpath:/spring/spring-security-test.xml"
 		, "classpath:/spring/test-persistence-context.xml"})
 public class UserAppTest implements InitializingBean{
-
-//	HsqlDBStarterListener hsqlStarter;
-//	
-//	StartupManager startupManager;
+	
+	@Autowired
+	EntityManagerFactory entityManagerFactory;
 	
 	@Autowired
 	WebApplicationContext wac;
 		
     @Autowired
     private FilterChainProxy springSecurityFilterChain;
-       
+    
+    @Autowired
+    SessionUserInjectorFilter sessionUserInjectorFilter;
+    
     @Autowired 
     StartupManager startupManager;
     
@@ -81,9 +89,22 @@ public class UserAppTest implements InitializingBean{
 			.andExpect(status().isOk());
 	}
 
+	@Test
+	public void testUserInjectionInSession() throws Exception
+	{
+		mockMvc.perform(get("/user/ranks").with(user("rospo"))).andExpect(status().isOk());
+	}
+	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).addFilters(springSecurityFilterChain).build();
-		//startupManager.setupORM();
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+				.addFilters(springSecurityFilterChain, sessionUserInjectorFilter)
+				.build();
+		
+		EntityManager manager = entityManagerFactory.createEntityManager();
+		List<User> users = manager.createQuery("select u from User u", User.class).getResultList();
+		if(users.isEmpty()){
+			startupManager.setupORM();
+		}
 	}
 }

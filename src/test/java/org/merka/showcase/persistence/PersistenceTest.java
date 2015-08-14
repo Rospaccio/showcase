@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,15 +25,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@Ignore
 @RunWith(SpringJUnit4ClassRunner.class) // this requires jUnit 4.9 or higher
 @ContextConfiguration(locations = {"classpath:/spring/test-persistence-context.xml"})
 public class PersistenceTest implements InitializingBean
 {
 	private static EntityManagerFactory entityManagerFactory;
 	
-	@Autowired
-	HsqlDBStarterListener hsqlStarter;
+//	@Autowired
+	static HsqlDBStarterListener hsqlStarter;
 	
 	public HsqlDBStarterListener getHsqlStarter() {
 		return hsqlStarter;
@@ -42,24 +42,19 @@ public class PersistenceTest implements InitializingBean
 		this.hsqlStarter = hsqlStarter;
 	}
 
-	@Autowired
-	StartupManager startupManager;
+	@BeforeClass
+	public static void staticSetup() {
+		hsqlStarter = new HsqlDBStarterListener();
+		hsqlStarter.setDatabaseName("showcase-test");
+		hsqlStarter.initDataBase();
+		entityManagerFactory = Persistence.createEntityManagerFactory("org.merka.showcase.test.jpa");
+	}
 	
-	public StartupManager getStartupManager()
-	{
-		return startupManager;
-	}
-
-	public void setStartupManager(StartupManager startupManager)
-	{
-		this.startupManager = startupManager;
-	}
-
 	@Override
 	public void afterPropertiesSet()
 	{
-		hsqlStarter.initDataBase();
-		entityManagerFactory = Persistence.createEntityManagerFactory("org.merka.showcase.test.jpa");		
+//		StartupManager startupManager = new StartupManager();
+//		startupManager.setEntityManagerFactory(entityManagerFactory);	
 	}
 	
 	@Test

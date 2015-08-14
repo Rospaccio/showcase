@@ -19,6 +19,8 @@
 		<constructor-arg index="0" value="org.merka.showcase.test.jpa"></constructor-arg>
 	</bean>
 	
+	<bean id="sessionUserInjectorFilter" class="org.merka.showcase.filter.SessionUserInjectorFilter"></bean>
+	
 	<bean id="startupManager" class="org.merka.showcase.listener.StartupManager"></bean>
 
 </beans>

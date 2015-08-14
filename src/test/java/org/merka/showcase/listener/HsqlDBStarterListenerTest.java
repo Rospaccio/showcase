@@ -11,7 +11,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockServletContext;
 
-@Ignore
 public class HsqlDBStarterListenerTest {
 
 	@Test

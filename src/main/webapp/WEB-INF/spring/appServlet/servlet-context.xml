@@ -34,7 +34,7 @@
 		<!-- This narrows the scope of the resolver to the view names (returned 
 			by the controllers' methods) to those matching the pattern -->
 		<beans:property name="viewNames" value="templates/*"></beans:property>
-		<!-- this places this resolver before the default InternalResourceViewResolver -->
+		<!-- places this resolver before the default InternalResourceViewResolver -->
 		<beans:property name="order" value="0"></beans:property>
 	</beans:bean>
 
@@ -56,4 +56,7 @@
 	<mvc:resources mapping="/resources/**" location="/resources/"
 		cache-period="1" />
 
+<!-- 	<beans:bean name="sessionUserInjectorFilter" class="org.merka.showcase.filter.SessionUserInjectorFilter"> -->
+<!-- 	</beans:bean> -->
+	
 </beans:beans>
