@@ -11,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.User;
 import org.merka.showcase.listener.HsqlDBStarterListener;
 import org.springframework.beans.factory.InitializingBean;
@@ -47,6 +48,38 @@ public class UserServiceTest implements InitializingBean{
 		assertEquals(found.getId(), user.getId());
 		
 		manager.close();
+	}
+	
+	@Test
+	public void testSaveUserRelationships()
+	{
+		User original = User.create("original");
+		original.setPassword("test");
+		Rank rank = Rank.create("test", "test");
+		original.addRank(rank);
+		
+		userService.save(original);
+		
+		EntityManager manager = factory.createEntityManager();
+		User saved = manager.find(User.class, original.getId());
+		
+		assertNotNull(saved);
+		assertEquals(saved.getUsername(), original.getUsername());
+		assertEquals(saved.getPassword(), original.getPassword());
+		assertEquals(saved.getId(), original.getId());
+		
+		assertNotNull(saved.getRoles());
+		assertTrue(! saved.getRoles().isEmpty());
+		assertEquals(1, saved.getRoles().size());
+		
+		assertNotNull(saved.getRanks());
+		assertTrue(! saved.getRanks().isEmpty());
+		assertEquals(1, saved.getRanks().size());
+		
+		Rank savedRank = saved.getRanks().get(0);
+		assertEquals(rank.getName(), savedRank.getName());
+		assertEquals(rank.getDescription(), savedRank.getDescription());
+		assertEquals(rank.getId(), savedRank.getId());
 	}
 
 	@Override
