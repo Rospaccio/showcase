@@ -17,6 +17,7 @@
 		<common-lang.version>2.6</common-lang.version>
 		<commons-io.version>2.4</commons-io.version>
 		<hibernate.version>4.3.10.Final</hibernate.version>
+		<profile.property.filename>default</profile.property.filename>
 	</properties>
 
 	<repositories>
@@ -145,12 +146,12 @@
 		</dependency>
 
 		<!-- Servlet -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>javax.servlet</groupId> -->
-<!-- 			<artifactId>servlet-api</artifactId> -->
-<!-- 			<version>3.0-alpha-1</version> -->
-<!-- 			<scope>provided</scope> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>javax.servlet</groupId> -->
+		<!-- <artifactId>servlet-api</artifactId> -->
+		<!-- <version>3.0-alpha-1</version> -->
+		<!-- <scope>provided</scope> -->
+		<!-- </dependency> -->
 		<!-- this is required to provide the tests running with mock mvc with all 
 			the necessary classes -->
 		<dependency>
@@ -219,7 +220,34 @@
 		</dependency>
 
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev</value>
+				</property>
+			</activation>
+			<properties>
+				<profile.property.filename>development</profile.property.filename>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
+			
+		<filters>
+			<filter>profiles/${profile.property.filename}.properties</filter>
+		</filters>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
