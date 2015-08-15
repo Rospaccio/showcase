@@ -7,9 +7,9 @@
 	http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
 	<sec:http auto-config="true" use-expressions="false">
-<!-- 		<sec:intercept-url pattern="/welcome**" access="ROLE_USER" /> -->
-<!-- 		<sec:intercept-url pattern="/user/**" access="ROLE_USER,ROLE_ADMIN"/> -->
-<!-- 		<sec:intercept-url pattern="/admin/**" access="ROLE_ADMIN"/> -->
+		<sec:intercept-url pattern="/welcome**" access="ROLE_USER" />
+		<sec:intercept-url pattern="/user/**" access="ROLE_USER,ROLE_ADMIN"/>
+		<sec:intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>
 		<sec:form-login login-page="/loginPage"
 			default-target-url="/welcome" 
 			authentication-failure-url="/loginPage?fail"
