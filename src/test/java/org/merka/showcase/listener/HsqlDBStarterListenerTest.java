@@ -1,13 +1,12 @@
 package org.merka.showcase.listener;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.servlet.ServletContextEvent;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockServletContext;
 

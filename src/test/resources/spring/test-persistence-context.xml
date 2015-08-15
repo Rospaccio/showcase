@@ -19,4 +19,8 @@
 	<bean id="userService" class="org.merka.showcase.service.UserService">
 	</bean>
 	
+	<bean id="userServiceUtils" class="org.merka.showcase.service.UserServiceUtils">
+		<constructor-arg index="0" ref="userService"></constructor-arg>
+	</bean>
+	
 </beans>

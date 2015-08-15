@@ -10,7 +10,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.merka.showcase.utils.ShowcaseUtils;
 
 @Entity
 @Table(name = "RANKITEM", 

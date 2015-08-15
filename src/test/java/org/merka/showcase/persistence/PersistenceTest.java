@@ -11,7 +11,6 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.merka.showcase.entity.Rank;
@@ -19,9 +18,7 @@ import org.merka.showcase.entity.RankItem;
 import org.merka.showcase.entity.User;
 import org.merka.showcase.entity.UserRole;
 import org.merka.showcase.listener.HsqlDBStarterListener;
-import org.merka.showcase.listener.StartupManager;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -39,7 +36,7 @@ public class PersistenceTest implements InitializingBean
 	}
 
 	public void setHsqlStarter(HsqlDBStarterListener hsqlStarter) {
-		this.hsqlStarter = hsqlStarter;
+		PersistenceTest.hsqlStarter = hsqlStarter;
 	}
 
 	@BeforeClass

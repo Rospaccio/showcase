@@ -2,7 +2,6 @@ package org.merka.showcase.filter;
 
 import java.io.IOException;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;

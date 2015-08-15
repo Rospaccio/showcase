@@ -6,54 +6,63 @@ import javax.persistence.EntityManagerFactory;
 import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.User;
 
-public class UserService extends User 
-{	
+public class UserService extends User
+{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	
-	
-	EntityManagerFactory entityManagerFactory;
+	private static final long	serialVersionUID	= 1L;
 
-	public EntityManagerFactory getEntityManagerFactory() {
+	EntityManagerFactory		entityManagerFactory;
+
+	public EntityManagerFactory getEntityManagerFactory()
+	{
 		return entityManagerFactory;
 	}
 
-	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory)
+	{
 		this.entityManagerFactory = entityManagerFactory;
 	}
-	
+
 	public UserService()
 	{
 	}
-	
+
 	public User findUserById(Long userId)
 	{
-		return null;
+		EntityManager manager = getEntityManager();
+		try
+		{
+			return manager.find(User.class, userId);
+		}
+		finally
+		{
+			manager.close();
+		}
 	}
-		
+
 	public User save(User user)
 	{
 		EntityManager manager = getEntityManager();
 		manager.getTransaction().begin();
 		manager.persist(user);
-		for(Rank rank : user.getRanks())
+		for (Rank rank : user.getRanks())
 		{
 			manager.persist(rank);
 		}
 		manager.getTransaction().commit();
 		manager.close();
-		
+
 		return user;
 	}
-	
+
 	public User findUserByUsername(String username)
 	{
 		return null;
 	}
 
-	private EntityManager getEntityManager() 
+	private EntityManager getEntityManager()
 	{
 		return entityManagerFactory.createEntityManager();
 	}
