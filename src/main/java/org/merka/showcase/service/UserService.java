@@ -59,7 +59,15 @@ public class UserService extends User
 
 	public User findUserByUsername(String username)
 	{
-		return null;
+		EntityManager manager = getEntityManager();
+		try
+		{
+			return manager.createQuery("select u from User u where u.username = :username", User.class).setParameter("username", username).getSingleResult();
+		}
+		finally
+		{
+			manager.close();
+		}
 	}
 
 	private EntityManager getEntityManager()

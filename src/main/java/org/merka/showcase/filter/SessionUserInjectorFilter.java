@@ -17,10 +17,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Component
 public class SessionUserInjectorFilter extends OncePerRequestFilter implements
 		Filter {
+
+	public static final String KEY_CURRENT_USER = "CURRENT_USER";
 
 	private static final Logger logger = LoggerFactory.getLogger(SessionUserInjectorFilter.class);
 	
@@ -58,7 +65,11 @@ public class SessionUserInjectorFilter extends OncePerRequestFilter implements
 				}
 				if(user != null)
 				{
-					((HttpServletRequest) request).getSession().setAttribute("CURRENT_USER", user);
+					((HttpServletRequest) request).getSession().setAttribute(KEY_CURRENT_USER, user);
+					
+//					// add the user in the spring scoped attributes
+//					RequestAttributes attributes = RequestContextHolder.currentRequestAttributes();
+//					attributes.setAttribute("user", user, RequestAttributes.SCOPE_REQUEST);
 				}
 			}
 		}
