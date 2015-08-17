@@ -123,4 +123,9 @@ public class MyRanksController extends BasePageController
 		manager.close();
 		return results;
 	}
+
+	@Override
+	public String getPageTitle() {
+		return "My Ranks";
+	}
 }

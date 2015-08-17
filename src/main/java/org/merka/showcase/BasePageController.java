@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
-public class BasePageController 
+public abstract class BasePageController 
 {
 
 	@ModelAttribute(value = "sessionUser")
@@ -18,4 +18,6 @@ public class BasePageController
 		return sessionUser;
 	}
 	
+	@ModelAttribute("pageTitle")
+	public abstract String getPageTitle();
 }

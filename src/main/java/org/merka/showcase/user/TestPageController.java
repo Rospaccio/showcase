@@ -14,4 +14,9 @@ public class TestPageController extends BasePageController
 	{
 		return thymeleafViewName("probe");
 	}
+
+	@Override
+	public String getPageTitle() {
+		return "Test Page";
+	}
 }
