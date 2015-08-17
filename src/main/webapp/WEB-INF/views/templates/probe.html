@@ -1,28 +1,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
-	<head th:replace="templates/fragments/head :: head"></head>
-	
+<head th:replace="templates/fragments/head :: head"></head>
+
 	<body>
 		<div th:include="templates/fragments/navbar :: navbar"></div>
-
-	<div class="container">
-		<div class="well">
-			<h1>Test page</h1>
-		</div>
-
-		<div th:if="${sessionUser}">
-			<div th:text="${sessionUser.username}"></div>
-		</div>
-		<div th:unless="${sessionUser}">
-			<div>	
-				User not authenticated			
-			</div>	
-		</div>
-		
-		<div th:include="templates/fragments/footer :: copyright"></div>
-	</div>
+		<div id="spacer" style="height: 20px;"></div>
+		<div class="container">
+			<div class="well">
+				<h1>Test page</h1>
+				<div class="alert alert-info" th:text="${testMessage}">[N. A.]</div>
+			</div>
 	
-	<div th:include="templates/fragments/head :: footer-scripts"></div>
-		
+			<div th:if="${sessionUser}">
+				<div th:text="${sessionUser.username}"></div>
+			</div>
+			<div th:unless="${sessionUser}">
+				<div>User not authenticated</div>
+			</div>
+	
+			<div th:include="templates/fragments/footer :: copyright"></div>
+		</div>
+	
+		<div th:include="templates/fragments/head :: footer-scripts"></div>
+	
 	</body>
 </html>
