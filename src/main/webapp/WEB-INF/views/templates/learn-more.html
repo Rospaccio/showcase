@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="templates/fragments/head :: head" />
+<body>
+
+	<div th:include="templates/fragments/navbar :: navbar"></div>
+	
+	
+	<div class="container">
+		
+		<h1>Showcase</h1>
+		<h2>Goals</h2>
+		<ol>
+			<li>
+				Creating an archetype to use as a personal 
+				starting point whenever the creation of a 
+				new web application is required.
+			</li>
+			<li>
+				having a reference project to look up for 
+				snippets of code and examples whenever 
+				dealing with problems similar to the ones 
+				solved here;
+			</li>
+			<li>
+				Having a "showcase" (from which the name...) 
+				to prove the knowledge of the most widespread 
+				and important technologies in the Java 
+				ecosystem, possibly useful in CVs and 
+				during job interviews.
+			</li>
+			<li>
+				Having a tested (and working) source code 
+				base to copy and paste on answers on 
+				StackOverflow, if that is appropriate.
+			</li>
+			<li>
+				Learning something new in the process.
+			</li>
+		</ol>
+		
+		<div th:include="templates/fragments/footer :: copyright"></div>
+	</div>
+	
+	<div th:include="templates/fragments/head :: footer-scripts"></div>
+
+</body>
+</html>

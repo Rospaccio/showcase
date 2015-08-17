@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+	<head th:replace="templates/fragments/head :: head"></head>
+	<body>
+		<div th:include="templates/fragments/navbar :: navbar"></div>
+	
+		<div style="height: 20px;"></div>
+	
+		<div class="container">
+			<div class="well">
+				<div></div>
+				<div class="row">
+					<div class="col-md-4">
+						<div>
+							<span class="img-responsive img-rounded"
+								style="background-image: url(&quot;resources/images/angry-toad.jpg&quot;);">
+								<img class="img-responsive" alt=""
+								src="resources/images/angry-toad.jpg" />
+							</span>
+							<p>Toad is not amused.</p>
+						</div>
+					</div>
+	
+					<div class="col-md-8">
+						<h2>Just ranks</h2>
+						<p>
+							You can <a href="/user/ranks">review your ranks</a> or <a>create
+								a new one</a>
+						</p>
+					</div>
+				</div>
+	
+			</div>
+			
+			
+			<div th:include="templates/fragments/footer :: copyright"></div>
+		</div>
+		
+		<div th:include="templates/fragments/head :: footer-scripts"></div>
+	</body>
+</html>

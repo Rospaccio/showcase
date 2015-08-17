@@ -37,6 +37,12 @@ public class HomeController extends BasePageController{
 		return thymeleafViewName("home");
 	}
 
+	@RequestMapping("/learn-more")
+	public String learnMore()
+	{
+		return thymeleafViewName("learn-more");
+	}
+	
 	@Override
 	public String getPageTitle() {
 		return "Home Page";
