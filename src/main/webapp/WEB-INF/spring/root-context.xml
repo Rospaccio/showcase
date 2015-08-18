@@ -35,8 +35,12 @@
 		<property name="fallbackToSystemLocale" value="true" />
 		<property name="basenames">
 			<list>
-				<value>/WEB-INF/lang</value>
-<!-- 				<value>classpath*:lang</value> -->
+			<!-- 
+				This is the path + filename without the suffix specifying the regional/language
+				e.g. the actual file will be named something like messages_en_US.properties
+			 -->
+				<value>WEB-INF/lang/messages</value>
+				<value>classpath*:lang/messages</value>
 			</list>
 		</property>
 	</bean>
