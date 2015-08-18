@@ -1,6 +1,6 @@
 package org.merka.showcase;
 
-import static org.merka.showcase.utils.ShowcaseUtils.jspViewName;
+import static org.merka.showcase.utils.ShowcaseUtils.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +22,6 @@ public class LoginController
 			logger.info("Login failed");
 			model.addAttribute("errorMessage", "Authentication failed: please check username and password");
 		}
-		return jspViewName("loginPage");
+		return thymeleafViewName("loginPage");
 	}
 }

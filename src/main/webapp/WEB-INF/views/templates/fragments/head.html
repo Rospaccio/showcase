@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head th:fragment="head">
 		<meta charset="utf-8" />
@@ -7,16 +8,17 @@
 		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 		<meta name="description" content="" />
 		<meta name="author" content="merka" />
+		
 		<link rel="icon" href="favicon.ico" />
 				
 		<title th:text="${pageTitle}"></title>
 				
 		<!-- Bootstrap core CSS -->
-		<link href="/resources/bootstrap-3.3.5-dist/css/bootstrap.min.css"
+		<link th:href="@{/resources/bootstrap-3.3.5-dist/css/bootstrap.min.css}"
 			rel="stylesheet" />
 		
 		<!-- Custom styles for this template -->
-		<link href="/resources/css/jumbotron.css" rel="stylesheet" />
+		<link th:href="@{/resources/css/jumbotron.css}" rel="stylesheet" />
 		
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
@@ -31,10 +33,10 @@
 		    ================================================== -->
 			<!-- Placed at the end of the document so the pages load faster -->
 			<script
-				src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-			<script src="/resources/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+				th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js}"></script>
+			<script th:src="@{/resources/bootstrap-3.3.5-dist/js/bootstrap.min.js}"></script>
 			<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-			<script src="/resources/js/ie10-viewport-bug-workaround.js"></script>
+			<script th:src="@{/resources/js/ie10-viewport-bug-workaround.js}"></script>
 		</div>
 	</body>
 </html>

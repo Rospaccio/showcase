@@ -10,12 +10,16 @@
 				<h1>Test page</h1>
 				<div class="alert alert-info" th:text="${testMessage}">[N. A.]</div>
 			</div>
-	
-			<div th:if="${sessionUser}">
+			
+			<div class="well" th:if="${sessionUser}">
 				<div th:text="${sessionUser.username}"></div>
 			</div>
-			<div th:unless="${sessionUser}">
+			<div class="well" th:unless="${sessionUser}">
 				<div>User not authenticated</div>
+			</div>
+	
+			<div clas="well">
+				<a th:href="@{/loginPage}" th:text="${sessionUser}">TEST: Click me</a>
 			</div>
 	
 			<div th:include="templates/fragments/footer :: copyright"></div>
