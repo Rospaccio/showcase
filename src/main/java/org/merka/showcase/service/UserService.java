@@ -1,29 +1,17 @@
 package org.merka.showcase.service;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.User;
 
-public class UserService extends User
+public class UserService extends BaseService
 {
 	/**
 	 * 
 	 */
+	@SuppressWarnings("unused")
 	private static final long	serialVersionUID	= 1L;
-
-	EntityManagerFactory		entityManagerFactory;
-
-	public EntityManagerFactory getEntityManagerFactory()
-	{
-		return entityManagerFactory;
-	}
-
-	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory)
-	{
-		this.entityManagerFactory = entityManagerFactory;
-	}
 
 	public UserService()
 	{
@@ -62,16 +50,24 @@ public class UserService extends User
 		EntityManager manager = getEntityManager();
 		try
 		{
-			return manager.createQuery("select u from User u where u.username = :username", User.class).setParameter("username", username).getSingleResult();
+			return manager.createQuery("select u from User u where u.username = :username", User.class)
+					.setParameter("username", username).getSingleResult();
 		}
 		finally
 		{
 			manager.close();
 		}
 	}
-
-	private EntityManager getEntityManager()
+	
+	public void delete(User user)
 	{
-		return entityManagerFactory.createEntityManager();
+		EntityManager manager =  getEntityManager();
+		manager.getTransaction().begin();
+		
+		User upToDate = manager.find(User.class, user.getId());
+		
+		manager.remove(upToDate);
+		manager.getTransaction().commit();
+		manager.close();
 	}
 }

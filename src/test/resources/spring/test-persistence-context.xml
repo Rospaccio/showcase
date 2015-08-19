@@ -23,4 +23,6 @@
 		<constructor-arg index="0" ref="userService"></constructor-arg>
 	</bean>
 	
+	<bean id="rankService" class="org.merka.showcase.service.RankService"></bean>
+	
 </beans>

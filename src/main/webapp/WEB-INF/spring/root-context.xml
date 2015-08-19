@@ -27,6 +27,11 @@
 		scope="singleton">
 		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
 	</bean>
+	
+	<bean id="rankService" class="org.merka.showcase.service.RankService"
+		scope="singleton">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>	
+	</bean>
 
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">

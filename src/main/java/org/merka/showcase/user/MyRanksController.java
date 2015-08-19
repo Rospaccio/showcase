@@ -76,7 +76,6 @@ public class MyRanksController extends BasePageController
 
 		RedirectView redirectView = new RedirectView("/user/ranks");
 		return redirectView;
-//		return thymeleafViewName("user/ranks");
 	}
 
 //	private void updateModel(Model model, User user)

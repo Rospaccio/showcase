@@ -24,6 +24,8 @@ public class RankItem
 	private String name;
 	private String description;
 	private int positionInRank;
+	
+	
 	private Rank rank;
 	
 	@Id

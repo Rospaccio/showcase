@@ -54,7 +54,7 @@ public class Rank
 		this.description = description;
 	}
 	
-	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, targetEntity = User.class, optional = false)
+	@ManyToOne(targetEntity = User.class, optional = false)
 	public User getOwner()
 	{
 		return owner;

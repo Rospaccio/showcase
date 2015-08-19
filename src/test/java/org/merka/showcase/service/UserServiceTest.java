@@ -5,30 +5,17 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.User;
-import org.merka.showcase.listener.HsqlDBStarterListener;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/spring/test-persistence-context.xml"})
-public class UserServiceTest implements InitializingBean{
-
-	EntityManagerFactory factory;
-	
-	@Autowired
-	HsqlDBStarterListener hsqlStarter;
-	
-	@Autowired
-	UserService userService;
+public class UserServiceTest extends BaseServiceTest{
 	
 	@Test
 	public void testSaveUser() 
@@ -80,12 +67,21 @@ public class UserServiceTest implements InitializingBean{
 		assertEquals(rank.getDescription(), savedRank.getDescription());
 		assertEquals(rank.getId(), savedRank.getId());
 	}
-
-	@Override
-	public void afterPropertiesSet() throws Exception 
+	
+	@Test
+	public void testDelete()
 	{
-		hsqlStarter.initDataBase();
-		factory = Persistence.createEntityManagerFactory("org.merka.showcase.test.jpa");
-		userService.setEntityManagerFactory(factory);
+		User toBeDeleted = User.create("toBeDeleted");
+		toBeDeleted.setPassword("toBeDeleted");
+		Rank rank = Rank.create("toBeDeleted", "toBeDeleted");
+		toBeDeleted.addRank(rank);
+		
+		userService.save(toBeDeleted);
+		
+		assertNotNull(userService.findUserById(toBeDeleted.getId()));
+		
+		userService.delete(toBeDeleted);
+		
+		assertEquals(null, userService.findUserById(toBeDeleted.getId()));
 	}
 }

@@ -67,7 +67,7 @@ public class User implements Serializable
 		this.enabled = enabled;
 	}
 	
-	@OneToMany(mappedBy = "owner")	
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)	
 	public List<Rank> getRanks()
 	{
 		return ranks;

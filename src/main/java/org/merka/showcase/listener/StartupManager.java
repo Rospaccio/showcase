@@ -48,7 +48,7 @@ public class StartupManager implements ServletContextListener {
 		
 		entityManagerFactory = factory;
 
-		// setupORM();
+		//insertDefaultData();
 	}
 
 //	public static EntityManagerFactory getEntityManagerFactory() {
@@ -58,7 +58,7 @@ public class StartupManager implements ServletContextListener {
 	/**
 	 * Populates the database with the default development data
 	 */
-	public void setupORM() {
+	public void insertDefaultData() {
 		// The parameter of this method call (persistenceUnitName) must match
 		// the one set in persistence.xml
 		// as the value of the value attribute of persistence-unit
@@ -70,21 +70,18 @@ public class StartupManager implements ServletContextListener {
 			User devUser = User.create("rospo");
 			devUser.setPassword(encoder.encode("rospo"));
 
-			User devUser2 = User.create("rospo2");
-			devUser2.setPassword(encoder.encode("rospo2"));
+			User devUser2 = User.create("test");
+			devUser2.setPassword(encoder.encode("test"));
 
 			EntityManager manager = entityManagerFactory.createEntityManager();
 			manager.getTransaction().begin();
 			manager.persist(devUser);
 			manager.persist(devUser2);
 
-			for (int i = 0; i < 3; i++) {
-				Rank r = Rank.create("Rank #" + i, "A Test rank");
-				r.setOwner(devUser);
-				manager.persist(r);
-			}
 			manager.getTransaction().commit();
-		} catch (Exception e) {
+		} 
+		catch (Exception e)
+		{
 			logger.error("Error while adding new app User", e);
 		}
 	}

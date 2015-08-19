@@ -42,6 +42,9 @@
 										<span>Delete</span>
 									</button>
 								</form>
+								<a class="btn btn-primary" role="button" shape="rect" th:href="@{/user/rank-items/{rankId}(rankId=${rank.id})}"
+									th:text="#{ranks.button.view.text}">
+								</a>
 <!-- 								<form th:action="@{/user/ranks/view}" method="post" -->
 <!-- 									style="float: left;"> -->
 <!-- 									<input type="hidden" id="id" name="id" th:value="${rank.id}"></input> -->

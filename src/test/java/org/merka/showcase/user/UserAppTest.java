@@ -102,7 +102,7 @@ public class UserAppTest implements InitializingBean{
 		EntityManager manager = entityManagerFactory.createEntityManager();
 		List<User> users = manager.createQuery("select u from User u", User.class).getResultList();
 		if(users.isEmpty()){
-			startupManager.setupORM();
+			startupManager.insertDefaultData();
 		}
 	}
 }
