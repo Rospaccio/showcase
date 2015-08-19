@@ -64,7 +64,8 @@ public class Rank
 		this.owner = owner;
 	}
 	
-	@OneToMany(mappedBy = "rank", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "rank", fetch = FetchType.LAZY)
+	
 	public List<RankItem> getItems()
 	{
 		return items;

@@ -16,7 +16,36 @@
 	<div id="content" th:if="${rank}">
 		<div class="container">
 			<div class="well">
-				<h1 th:text="${rank.name}">Rank name if any</h1>
+				<div class="container">
+					<div class="row">
+						<h2 th:text="${rank.name}">Rank name if any</h2>
+						<div class="col-md-4">
+							<button type="button" class="btn btn-primary" data-toggle="modal" th:text="#{rank.items.create-new}">
+							</button>
+						</div>
+					</div>
+				</div>
+					
+
+				<div class="row">
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<thead>
+								<th th:text="#{item.positionInRank}">#</th>
+								<th th:text="#{item.name}">Name</th>
+								<th th:text="#{item.description}">Description</th>
+							</thead>
+							<tbody>
+								<tr th:each="item, stat : ${rank.items}">
+									<td th:text="${item.positionInRank}"></td>
+									<td th:text="${item.name}"></td>
+									<td th:text="${item.description}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
 			</div>
 		</div>
 
