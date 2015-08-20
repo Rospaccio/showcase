@@ -22,7 +22,7 @@ public class RankService extends BaseService{
 									.createQuery("select r from Rank r where r.owner.username = :username", Rank.class)
 									.setParameter("username", username)
 									.getResultList();
-		manager.close();
+//		manager.close();
 		return rankResults;
 	}
 	
@@ -38,6 +38,15 @@ public class RankService extends BaseService{
 		manager.getTransaction().begin();
 		manager.remove(upToDateRank);
 		manager.getTransaction().commit();
-		manager.close();
+//		manager.close();
+	}
+
+	public void save(Rank rank) 
+	{
+		EntityManager manager = getEntityManager();
+		manager.getTransaction().begin();		
+		manager.persist(rank);		
+		manager.getTransaction().commit();
+//		manager.close();
 	}
 }

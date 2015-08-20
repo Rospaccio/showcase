@@ -46,21 +46,26 @@ public class RankServiceTest extends BaseServiceTest{
 		{
 			owner.addRank(Rank.create("test", "test"));
 		}
-		
+		// saves a user with 4 ranks
 		userService.save(owner);
-		
-		rankService.delete(owner.getRanks().get(3));
-		
+				
 		User upToDate = userService.findUserById(owner.getId());
 		assertEquals(owner.getId(), upToDate.getId());
 		assertEquals(owner.getUsername(), upToDate.getUsername());
+		assertEquals(4, upToDate.getRanks().size());
+		
+		Rank removed = upToDate.getRanks().remove(3);
+//		userService.save(upToDate);
+		rankService.delete(removed);
+		upToDate = userService.findUserById(upToDate.getId());
+		assertEquals(3, upToDate.getRanks().size());
 	}
 	
 	@Test
 	public void testUpdateRank()
 	{
 		User user = User.create("test");
-		user.addRank(Rank.create("rank", "rankr"));
+		user.addRank(Rank.create("rank", "rank"));
 		
 		
 	}

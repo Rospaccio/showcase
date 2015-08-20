@@ -26,11 +26,23 @@ public class UserService extends BaseService
 		}
 		finally
 		{
-			manager.close();
+//			manager.close();
 		}
 	}
 
 	public User save(User user)
+	{
+		if(user.getId() != null)
+		{
+			return update(user);
+		}
+		else
+		{
+			return insert(user);
+		}
+	}
+	
+	protected User insert(User user)
 	{
 		EntityManager manager = getEntityManager();
 		manager.getTransaction().begin();
@@ -40,9 +52,24 @@ public class UserService extends BaseService
 			manager.persist(rank);
 		}
 		manager.getTransaction().commit();
-		manager.close();
+//		manager.close();
 
 		return user;
+	}
+	
+	protected User update(User user)
+	{
+		EntityManager manager = getEntityManager();
+		manager.getTransaction().begin();
+		User mergedUser = manager.merge(user);
+//		for (Rank rank : mergedUser.getRanks())
+//		{
+//			manager.persist(rank);
+//		}
+		manager.getTransaction().commit();
+//		manager.close();
+
+		return mergedUser;
 	}
 
 	public User findUserByUsername(String username)
@@ -55,7 +82,7 @@ public class UserService extends BaseService
 		}
 		finally
 		{
-			manager.close();
+//			manager.close();
 		}
 	}
 	
@@ -68,6 +95,6 @@ public class UserService extends BaseService
 		
 		manager.remove(upToDate);
 		manager.getTransaction().commit();
-		manager.close();
+//		manager.close();
 	}
 }

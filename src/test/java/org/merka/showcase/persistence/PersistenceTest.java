@@ -97,7 +97,7 @@ public class PersistenceTest implements InitializingBean
 			Rank rank = new Rank();
 			rank.setName("rank#" + i);
 			rank.setDescription("A test rank");
-			user.getRanks().add(rank);
+			user.addRank(rank);
 		}
 		
 		manager.getTransaction().begin();
@@ -167,7 +167,7 @@ public class PersistenceTest implements InitializingBean
 		
 		Rank rank = Rank.create("rank#0", "A test rank");
 		rank.setOwner(user);
-		user.getRanks().add(rank);
+		user.addRank(rank);
 		
 		manager.getTransaction().begin();
 		manager.persist(rank);

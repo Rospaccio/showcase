@@ -36,8 +36,8 @@ public class UserRole
 		this.id = id;
 	}
 	
-	@ManyToOne(cascade = CascadeType.ALL, targetEntity = User.class, optional = false)
-	@JoinColumn(name = "USERNAME", referencedColumnName = "username")
+	@ManyToOne(targetEntity = User.class, optional = false)
+	@JoinColumn(name = "USERNAME"/*, referencedColumnName = "username"*/)
 	public User getUser() {
 		return user;
 	}

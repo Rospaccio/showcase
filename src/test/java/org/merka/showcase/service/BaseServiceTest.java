@@ -9,16 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class BaseServiceTest implements InitializingBean {
 
-	EntityManagerFactory factory;
+	protected EntityManagerFactory factory;
 	
 	@Autowired
-	HsqlDBStarterListener hsqlStarter;
+	protected HsqlDBStarterListener hsqlStarter;
 	
 	@Autowired
-	UserService userService;
+	protected UserService userService;
 	
 	@Autowired
-	RankService rankService;
+	protected RankService rankService;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception 
