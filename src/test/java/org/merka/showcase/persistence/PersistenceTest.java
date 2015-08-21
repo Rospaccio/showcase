@@ -6,65 +6,68 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.PersistenceException;
+import javax.persistence.SynchronizationType;
+import javax.transaction.Transactional;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.RankItem;
 import org.merka.showcase.entity.User;
 import org.merka.showcase.entity.UserRole;
-import org.merka.showcase.listener.HsqlDBStarterListener;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class) // this requires jUnit 4.9 or higher
 @ContextConfiguration(locations = {"classpath:/spring/test-persistence-context.xml"})
-public class PersistenceTest implements InitializingBean
+public class PersistenceTest
 {
-	private static EntityManagerFactory entityManagerFactory;
+//	private static EntityManagerFactory entityManagerFactory;
 	
 //	@Autowired
-	static HsqlDBStarterListener hsqlStarter;
+//	static HsqlDBStarterListener hsqlStarter;
 	
-	public HsqlDBStarterListener getHsqlStarter() {
-		return hsqlStarter;
-	}
-
-	public void setHsqlStarter(HsqlDBStarterListener hsqlStarter) {
-		PersistenceTest.hsqlStarter = hsqlStarter;
-	}
-
-	@BeforeClass
-	public static void staticSetup() {
-		hsqlStarter = new HsqlDBStarterListener();
-		hsqlStarter.setDatabaseName("showcase-test");
-		hsqlStarter.initDataBase();
-		entityManagerFactory = Persistence.createEntityManagerFactory("org.merka.showcase.test.jpa");
-	}
+//	public HsqlDBStarterListener getHsqlStarter() {
+//		return hsqlStarter;
+//	}
+//
+//	public void setHsqlStarter(HsqlDBStarterListener hsqlStarter) {
+//		PersistenceTest.hsqlStarter = hsqlStarter;
+//	}
 	
-	@Override
-	public void afterPropertiesSet()
-	{
+	@PersistenceContext(unitName = "org.merka.showcase.test.jpa", type = PersistenceContextType.EXTENDED)
+	EntityManager entityManager;
+
+//	@BeforeClass
+//	public static void staticSetup() {
+//		hsqlStarter = new HsqlDBStarterListener();
+//		hsqlStarter.setDatabaseName("showcase-test");
+//		hsqlStarter.initDataBase();
+//		entityManagerFactory = Persistence.createEntityManagerFactory("org.merka.showcase.test.jpa");
+//	}
+	
+//	@Override
+//	public void afterPropertiesSet()
+//	{
 //		StartupManager startupManager = new StartupManager();
 //		startupManager.setEntityManagerFactory(entityManagerFactory);	
-	}
+//	}
 	
 	@Test
+	@Transactional
 	public void testPersistUser()
 	{
-		EntityManager manager = entityManagerFactory.createEntityManager();
+		EntityManager manager = entityManager;
 		
 		User testUser = new User();
 		testUser.setUsername("test");
 		
-		manager.getTransaction().begin();
+//		manager.getTransaction().begin();
 		manager.persist(testUser);
-		manager.getTransaction().commit();
+//		manager.getTransaction().commit();
 		
 		assertNotNull(testUser.getId());
 		
@@ -77,9 +80,9 @@ public class PersistenceTest implements InitializingBean
 		assertTrue(found.isEnabled());
 		
 		// deletes the user:
-		manager.getTransaction().begin();
+//		manager.getTransaction().begin();
 		manager.remove(found);
-		manager.getTransaction().commit();
+//		manager.getTransaction().commit();
 		// verifies the deletion
 		found = manager.find(User.class, testUser.getId());
 		assertNull(found);
@@ -88,7 +91,7 @@ public class PersistenceTest implements InitializingBean
 	@Test
 	public void testPersistUserWithInnerRanks()
 	{
-		EntityManager manager = entityManagerFactory.createEntityManager();
+		EntityManager manager = entityManager;
 		
 		User user = new User();
 		user.setUsername("venerabile");
@@ -100,9 +103,9 @@ public class PersistenceTest implements InitializingBean
 			user.addRank(rank);
 		}
 		
-		manager.getTransaction().begin();
+//		manager.getTransaction().begin();
 		manager.persist(user);
-		manager.getTransaction().commit();
+//		manager.getTransaction().commit();
 		
 		assertNotNull(user.getId());
 		
@@ -114,9 +117,9 @@ public class PersistenceTest implements InitializingBean
 		assertNotNull(rankId = found.getRanks().get(0).getId());
 		
 		// deletes all the data
-		manager.getTransaction().begin();
+//		manager.getTransaction().begin();
 		manager.remove(found);
-		manager.getTransaction().commit();
+//		manager.getTransaction().commit();
 		
 		found = manager.find(User.class, user.getId());
 		assertNull(found);
@@ -133,7 +136,7 @@ public class PersistenceTest implements InitializingBean
 		// this null value causes a failure
 		rank.setOwner(null);
 		
-		EntityManager manager = entityManagerFactory.createEntityManager();
+		EntityManager manager = entityManager;
 		manager.getTransaction().begin();
 		manager.persist(rank);
 		manager.getTransaction().commit();
@@ -143,13 +146,13 @@ public class PersistenceTest implements InitializingBean
 	@Test(expected = PersistenceException.class)
 	public void testPersistRankItems()
 	{
-		EntityManager manager = entityManagerFactory.createEntityManager();
+		EntityManager manager = entityManager;
 		
 		RankItem item = RankItem.create("item", "a new item");
 		
-		manager.getTransaction().begin();
+//		manager.getTransaction().begin();
 		manager.persist(item);
-		manager.getTransaction().commit();
+//		manager.getTransaction().commit();
 		
 		assertNotNull(item.getId());
 		assertEquals(-1, item.getPositionInRank());
@@ -159,26 +162,26 @@ public class PersistenceTest implements InitializingBean
 	public void testPersistUserRankAndItems()
 	{
 		User user = User.create("testUser");
-		EntityManager manager = entityManagerFactory.createEntityManager();
+		EntityManager manager = entityManager;
 		
-		manager.getTransaction().begin();
+//		manager.getTransaction().begin();
 		manager.persist(user);
-		manager.getTransaction().commit();
+//		manager.getTransaction().commit();
 		
 		Rank rank = Rank.create("rank#0", "A test rank");
 		rank.setOwner(user);
 		user.addRank(rank);
 		
-		manager.getTransaction().begin();
+//		manager.getTransaction().begin();
 		manager.persist(rank);
-		manager.getTransaction().commit();
+//		manager.getTransaction().commit();
 		
 		RankItem item = RankItem.create("rankItem#0", "A test RankItem");
 		rank.appendRankItem(item);
 		
-		manager.getTransaction().begin();
+//		manager.getTransaction().begin();
 		manager.persist(item);
-		manager.getTransaction().commit();
+//		manager.getTransaction().commit();
 		
 		// retrieves the user
 		User found = manager.find(User.class, user.getId());
@@ -187,9 +190,9 @@ public class PersistenceTest implements InitializingBean
 		assertTrue(! found.getRanks().get(0).getItems().isEmpty());
 		
 		// deletes all
-		manager.getTransaction().begin();
+//		manager.getTransaction().begin();
 		manager.remove(found);
-		manager.getTransaction().commit();
+//		manager.getTransaction().commit();
 	}
 	
 	@Test
@@ -201,16 +204,16 @@ public class PersistenceTest implements InitializingBean
 		
 		assertTrue(userWithRoles.getRoles() != null && userWithRoles.getRoles().size() == 2);
 		
-		EntityManager manager = entityManagerFactory.createEntityManager();
+		EntityManager manager = entityManager;
 		
-		manager.getTransaction().begin();
+//		manager.getTransaction().begin();
 		manager.persist(userWithRoles);
 		
 //		for(UserRole role : userWithRoles.getRoles()){
 //			manager.persist(role);
 //		}
 		
-		manager.getTransaction().commit();
+//		manager.getTransaction().commit();
 	
 		User found = manager.find(User.class, userWithRoles.getId());
 		assertNotNull(found);
@@ -222,8 +225,8 @@ public class PersistenceTest implements InitializingBean
 		assertNotNull(theRole);
 		assertTrue(theRole.getRole().equals(UserRole.ROLE_ADMIN) || theRole.getRole().equals(UserRole.ROLE_USER));
 		
-		manager.getTransaction().begin();
+//		manager.getTransaction().begin();
 		manager.remove(found);
-		manager.getTransaction().commit();
+//		manager.getTransaction().commit();
 	}
 }

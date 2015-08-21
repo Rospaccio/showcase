@@ -1,6 +1,7 @@
 package org.merka.showcase.service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.User;
@@ -13,6 +14,9 @@ public class UserService extends BaseService
 	@SuppressWarnings("unused")
 	private static final long	serialVersionUID	= 1L;
 
+	@PersistenceContext(unitName = "org.merka.showcase.test.jpa")
+	protected EntityManager manager;
+	
 	public UserService()
 	{
 	}
@@ -44,7 +48,7 @@ public class UserService extends BaseService
 	
 	protected User insert(User user)
 	{
-		EntityManager manager = getEntityManager();
+//		EntityManager manager = getEntityManager();
 		manager.getTransaction().begin();
 		manager.persist(user);
 		for (Rank rank : user.getRanks())
@@ -59,7 +63,7 @@ public class UserService extends BaseService
 	
 	protected User update(User user)
 	{
-		EntityManager manager = getEntityManager();
+//		EntityManager manager = getEntityManager();
 		manager.getTransaction().begin();
 		User mergedUser = manager.merge(user);
 //		for (Rank rank : mergedUser.getRanks())
@@ -74,7 +78,7 @@ public class UserService extends BaseService
 
 	public User findUserByUsername(String username)
 	{
-		EntityManager manager = getEntityManager();
+//		EntityManager manager = getEntityManager();
 		try
 		{
 			return manager.createQuery("select u from User u where u.username = :username", User.class)
@@ -88,7 +92,7 @@ public class UserService extends BaseService
 	
 	public void delete(User user)
 	{
-		EntityManager manager =  getEntityManager();
+//		EntityManager manager =  getEntityManager();
 		manager.getTransaction().begin();
 		
 		User upToDate = manager.find(User.class, user.getId());

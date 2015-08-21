@@ -20,6 +20,10 @@
 	
 	<resources mapping="/favicon.ico" location="/favicon.ico" />
 	
+	<beans:bean id="startupManager" class="org.merka.showcase.listener.StartupManager">
+		<beans:property name="txManager" ref="transactionManager"></beans:property>
+	</beans:bean>
+	
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
 	<beans:bean

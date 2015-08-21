@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
@@ -14,23 +17,45 @@
 		</property>
 	</bean>
 
-	<bean name="sessionUserInjectorFilter" class="org.merka.showcase.filter.SessionUserInjectorFilter">
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+		depends-on="entityManagerFactory">
 		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
 	</bean>
 
-	<bean name="entityManagerFactory" class="javax.persistence.Persistence"
-		factory-method="createEntityManagerFactory">
-		<constructor-arg index="0" value="org.merka.showcase.jpa"></constructor-arg>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="databaseBootstrapper" class="org.merka.showcase.DatabaseBootstrapper"
+		init-method="startDatabaseInstance">
+		<property name="databaseName" value="${persistence.unit.database.name}"></property>
+	</bean>
+
+	<bean name="sessionUserInjectorFilter" class="org.merka.showcase.filter.SessionUserInjectorFilter"
+		depends-on="entityManagerFactory">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
+	</bean>
+
+<!-- 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" -->
+<!-- 		destroy-method="close"> -->
+<!-- 		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
+<!-- 		<property name="url" value="jdbc:mysql://localhost:3306/TESTS" /> -->
+<!-- 		<property name="username" value="user" /> -->
+<!-- 		<property name="password" value="passwd" /> -->
+<!-- 	</bean> -->
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean"
+		depends-on="databaseBootstrapper">
+		<property name="persistenceUnitName" value="${persistence.unit.name}"></property>
 	</bean>
 
 	<bean id="userService" class="org.merka.showcase.service.UserService"
 		scope="singleton">
 		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
 	</bean>
-	
+
 	<bean id="rankService" class="org.merka.showcase.service.RankService"
 		scope="singleton">
-		<property name="entityManagerFactory" ref="entityManagerFactory"></property>	
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
 	</bean>
 
 	<bean id="messageSource"
@@ -40,10 +65,8 @@
 		<property name="fallbackToSystemLocale" value="true" />
 		<property name="basenames">
 			<list>
-			<!-- 
-				This is the path + filename without the suffix specifying the regional/language
-				e.g. the actual file will be named something like messages_en_US.properties
-			 -->
+				<!-- This is the path + filename without the suffix specifying the regional/language 
+					e.g. the actual file will be named something like messages_en_US.properties -->
 				<value>WEB-INF/lang/messages</value>
 				<value>classpath*:lang/messages</value>
 			</list>
