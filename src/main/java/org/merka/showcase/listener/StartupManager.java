@@ -1,48 +1,36 @@
 package org.merka.showcase.listener;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
+import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.merka.showcase.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
-//@Transactional
 public class StartupManager implements ServletContextListener {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(StartupManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(StartupManager.class);
 
-	@PersistenceContext(unitName = "org.merka.showcase.jpa", type = PersistenceContextType.EXTENDED)
-	EntityManager manager;
-	
-	JpaTransactionManager txManager;
-	
-//	EntityManagerFactory entityManagerFactory;
-//
-//	public EntityManagerFactory getEntityManagerFactory() {
-//		return entityManagerFactory;
-//	}
-//
-//	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
-//		this.entityManagerFactory = entityManagerFactory;
-//	}
+	@Autowired
+	EntityManagerFactory entityManagerFactory;
 
-	public JpaTransactionManager getTxManager() {
-		return txManager;
-	}
-
-	public void setTxManager(JpaTransactionManager txManager) {
-		this.txManager = txManager;
-	}
+	// EntityManagerFactory entityManagerFactory;
+	//
+	// public EntityManagerFactory getEntityManagerFactory() {
+	// return entityManagerFactory;
+	// }
+	//
+	// public void setEntityManagerFactory(EntityManagerFactory
+	// entityManagerFactory) {
+	// this.entityManagerFactory = entityManagerFactory;
+	// }
 
 	public StartupManager() {
 	}
@@ -55,37 +43,35 @@ public class StartupManager implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 
-//		EntityManagerFactory factory = WebApplicationContextUtils
-//				.getRequiredWebApplicationContext(event.getServletContext())
-//				.getAutowireCapableBeanFactory().getBean(EntityManagerFactory.class);
-//		
-//		entityManagerFactory = factory;
+		// EntityManagerFactory factory = WebApplicationContextUtils
+		// .getRequiredWebApplicationContext(event.getServletContext())
+		// .getAutowireCapableBeanFactory().getBean(EntityManagerFactory.class);
+		//
+		// entityManagerFactory = factory;
 
-		//insertDefaultData();
+		// insertDefaultData();
 	}
 
-//	public static EntityManagerFactory getEntityManagerFactory() {
-//		return entityManagerFactory;
-//	}
+	// public static EntityManagerFactory getEntityManagerFactory() {
+	// return entityManagerFactory;
+	// }
 
 	/**
 	 * Populates the database with the default development data
 	 */
-//	@Transactional
 	public void insertDefaultData() {
 		// The parameter of this method call (persistenceUnitName) must match
 		// the one set in persistence.xml
 		// as the value of the value attribute of persistence-unit
 		// entityManagerFactory = Persistence
 		// .createEntityManagerFactory("org.merka.showcase.jpa");
-		try 
-		{
+		try {
+			EntityManager manager = entityManagerFactory.createEntityManager();
 			User existingUser = manager.find(User.class, 1L);
-			if(existingUser != null)
-			{
+			if (existingUser != null) {
 				return;
 			}
-			
+
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 			// adds the default test users
 			User devUser = User.create("rospo");
@@ -100,9 +86,8 @@ public class StartupManager implements ServletContextListener {
 			manager.flush();
 
 			manager.getTransaction().commit();
-		} 
-		catch (Exception e)
-		{
+			manager.close();
+		} catch (Exception e) {
 			logger.error("Error while adding new app User", e);
 		}
 	}

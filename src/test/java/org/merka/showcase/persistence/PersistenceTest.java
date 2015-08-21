@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.PersistenceException;
@@ -18,6 +19,7 @@ import org.merka.showcase.entity.Rank;
 import org.merka.showcase.entity.RankItem;
 import org.merka.showcase.entity.User;
 import org.merka.showcase.entity.UserRole;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -25,21 +27,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"classpath:/spring/test-persistence-context.xml"})
 public class PersistenceTest
 {
-//	private static EntityManagerFactory entityManagerFactory;
-	
-//	@Autowired
-//	static HsqlDBStarterListener hsqlStarter;
-	
-//	public HsqlDBStarterListener getHsqlStarter() {
-//		return hsqlStarter;
-//	}
-//
-//	public void setHsqlStarter(HsqlDBStarterListener hsqlStarter) {
-//		PersistenceTest.hsqlStarter = hsqlStarter;
-//	}
-	
-	@PersistenceContext(unitName = "org.merka.showcase.test.jpa", type = PersistenceContextType.EXTENDED)
-	EntityManager entityManager;
+	@Autowired
+	EntityManagerFactory entityManagerFactory;
 
 //	@BeforeClass
 //	public static void staticSetup() {
@@ -60,7 +49,7 @@ public class PersistenceTest
 	@Transactional
 	public void testPersistUser()
 	{
-		EntityManager manager = entityManager;
+		EntityManager manager = entityManagerFactory.createEntityManager();
 		
 		User testUser = new User();
 		testUser.setUsername("test");
@@ -91,7 +80,7 @@ public class PersistenceTest
 	@Test
 	public void testPersistUserWithInnerRanks()
 	{
-		EntityManager manager = entityManager;
+		EntityManager manager = entityManagerFactory.createEntityManager();
 		
 		User user = new User();
 		user.setUsername("venerabile");
@@ -136,7 +125,7 @@ public class PersistenceTest
 		// this null value causes a failure
 		rank.setOwner(null);
 		
-		EntityManager manager = entityManager;
+		EntityManager manager = entityManagerFactory.createEntityManager();
 		manager.getTransaction().begin();
 		manager.persist(rank);
 		manager.getTransaction().commit();
@@ -146,7 +135,7 @@ public class PersistenceTest
 	@Test(expected = PersistenceException.class)
 	public void testPersistRankItems()
 	{
-		EntityManager manager = entityManager;
+		EntityManager manager = entityManagerFactory.createEntityManager();
 		
 		RankItem item = RankItem.create("item", "a new item");
 		
@@ -162,7 +151,7 @@ public class PersistenceTest
 	public void testPersistUserRankAndItems()
 	{
 		User user = User.create("testUser");
-		EntityManager manager = entityManager;
+		EntityManager manager = entityManagerFactory.createEntityManager();
 		
 //		manager.getTransaction().begin();
 		manager.persist(user);
@@ -204,7 +193,7 @@ public class PersistenceTest
 		
 		assertTrue(userWithRoles.getRoles() != null && userWithRoles.getRoles().size() == 2);
 		
-		EntityManager manager = entityManager;
+		EntityManager manager = entityManagerFactory.createEntityManager();
 		
 //		manager.getTransaction().begin();
 		manager.persist(userWithRoles);

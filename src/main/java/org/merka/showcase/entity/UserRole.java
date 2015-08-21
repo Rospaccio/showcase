@@ -37,7 +37,7 @@ public class UserRole
 	}
 	
 	@ManyToOne(targetEntity = User.class, optional = false)
-	@JoinColumn(name = "USERNAME"/*, referencedColumnName = "username"*/)
+	@JoinColumn(name = "USERNAME", referencedColumnName = "username")
 	public User getUser() {
 		return user;
 	}
