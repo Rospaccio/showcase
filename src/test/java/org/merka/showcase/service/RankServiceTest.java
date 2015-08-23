@@ -18,7 +18,7 @@ public class RankServiceTest extends BaseServiceTest{
 	@Test
 	public void testFindById() 
 	{
-		User user = User.create("testUser");
+		User user = User.create("testUserRank");
 		user.addRank(Rank.create("testRank", "a test"));
 		
 		userService.save(user);
@@ -58,6 +58,7 @@ public class RankServiceTest extends BaseServiceTest{
 		upToDate.setRanks(ranks);
 		
 		rankService.delete(removed.getId());
+//		userService.save(upToDate);
 		ranks = rankService.findAllByUsername(upToDate.getUsername());
 		assertEquals(3, ranks.size());
 		
@@ -72,7 +73,11 @@ public class RankServiceTest extends BaseServiceTest{
 	{
 //		User user = User.create("test");
 //		user.addRank(Rank.create("rank", "rank"));
-		
-		
+//		
+//		userService.save(user);
+//		
+//		
+//		
+//		userService.delete(user);
 	}
 }

@@ -98,7 +98,7 @@ public class UserService extends BaseService
 		EntityManager manager = null;
 		try
 		{
-			getEntityManager();
+			manager = getEntityManager();
 			manager.getTransaction().begin();
 			User mergedUser = manager.merge(user);
 			for (Rank rank : mergedUser.getRanks())

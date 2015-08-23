@@ -16,7 +16,7 @@
 			username-parameter="username" 
 			password-parameter="password" />
 			
-		<sec:logout logout-success-url="/" />
+		<sec:logout logout-url="/logout" logout-success-url="/" delete-cookies="JSESSIONID" invalidate-session="true"/>
 		<!-- enable csrf protection -->
 		<sec:csrf />
 	</sec:http>

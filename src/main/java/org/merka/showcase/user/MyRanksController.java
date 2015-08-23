@@ -42,8 +42,9 @@ public class MyRanksController extends BasePageController
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public View putNewRank(Model model, @ModelAttribute("newRank") Rank newRank,
-			@ModelAttribute("user") User user)
+	public View putNewRank(Model model, @ModelAttribute("newRank") Rank newRank
+			, @ModelAttribute("user") User user
+			, HttpServletRequest request)
 	{
 		logger.info("Rank: " + newRank.getName() + ", " + newRank.getDescription());
 
@@ -57,8 +58,8 @@ public class MyRanksController extends BasePageController
 		manager.persist(freshUser);
 		manager.persist(newRank);
 		manager.getTransaction().commit();
-
-		return new RedirectView("/user/ranks");
+		String contextPath = request.getContextPath();
+		return new RedirectView(contextPath + "/user/ranks");
 		//return thymeleafViewName("user/ranks");
 	}
 

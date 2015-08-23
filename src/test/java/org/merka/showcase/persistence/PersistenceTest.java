@@ -39,9 +39,9 @@ public class PersistenceTest
 		User testUser = new User();
 		testUser.setUsername("test");
 		
-//		manager.getTransaction().begin();
+		manager.getTransaction().begin();
 		manager.persist(testUser);
-//		manager.getTransaction().commit();
+		manager.getTransaction().commit();
 		
 		assertNotNull(testUser.getId());
 		
@@ -54,9 +54,9 @@ public class PersistenceTest
 		assertTrue(found.isEnabled());
 		
 		// deletes the user:
-//		manager.getTransaction().begin();
+		manager.getTransaction().begin();
 		manager.remove(found);
-//		manager.getTransaction().commit();
+		manager.getTransaction().commit();
 		// verifies the deletion
 		found = manager.find(User.class, testUser.getId());
 		assertNull(found);
@@ -77,9 +77,9 @@ public class PersistenceTest
 			user.addRank(rank);
 		}
 		
-//		manager.getTransaction().begin();
+		manager.getTransaction().begin();
 		manager.persist(user);
-//		manager.getTransaction().commit();
+		manager.getTransaction().commit();
 		
 		assertNotNull(user.getId());
 		
@@ -91,9 +91,9 @@ public class PersistenceTest
 		assertNotNull(rankId = found.getRanks().get(0).getId());
 		
 		// deletes all the data
-//		manager.getTransaction().begin();
+		manager.getTransaction().begin();
 		manager.remove(found);
-//		manager.getTransaction().commit();
+		manager.getTransaction().commit();
 		
 		found = manager.find(User.class, user.getId());
 		assertNull(found);
@@ -124,9 +124,9 @@ public class PersistenceTest
 		
 		RankItem item = RankItem.create("item", "a new item");
 		
-//		manager.getTransaction().begin();
+		manager.getTransaction().begin();
 		manager.persist(item);
-//		manager.getTransaction().commit();
+		manager.getTransaction().commit();
 		
 		assertNotNull(item.getId());
 		assertEquals(-1, item.getPositionInRank());
@@ -138,24 +138,24 @@ public class PersistenceTest
 		User user = User.create("testUser");
 		EntityManager manager = entityManagerFactory.createEntityManager();
 		
-//		manager.getTransaction().begin();
+		manager.getTransaction().begin();
 		manager.persist(user);
-//		manager.getTransaction().commit();
+		manager.getTransaction().commit();
 		
 		Rank rank = Rank.create("rank#0", "A test rank");
 		rank.setOwner(user);
 		user.addRank(rank);
 		
-//		manager.getTransaction().begin();
+		manager.getTransaction().begin();
 		manager.persist(rank);
-//		manager.getTransaction().commit();
+		manager.getTransaction().commit();
 		
 		RankItem item = RankItem.create("rankItem#0", "A test RankItem");
 		rank.appendRankItem(item);
 		
-//		manager.getTransaction().begin();
+		manager.getTransaction().begin();
 		manager.persist(item);
-//		manager.getTransaction().commit();
+		manager.getTransaction().commit();
 		
 		// retrieves the user
 		User found = manager.find(User.class, user.getId());
@@ -164,9 +164,9 @@ public class PersistenceTest
 		assertTrue(! found.getRanks().get(0).getItems().isEmpty());
 		
 		// deletes all
-//		manager.getTransaction().begin();
+		manager.getTransaction().begin();
 		manager.remove(found);
-//		manager.getTransaction().commit();
+		manager.getTransaction().commit();
 	}
 	
 	@Test
@@ -180,14 +180,14 @@ public class PersistenceTest
 		
 		EntityManager manager = entityManagerFactory.createEntityManager();
 		
-//		manager.getTransaction().begin();
+		manager.getTransaction().begin();
 		manager.persist(userWithRoles);
 		
 //		for(UserRole role : userWithRoles.getRoles()){
 //			manager.persist(role);
 //		}
 		
-//		manager.getTransaction().commit();
+		manager.getTransaction().commit();
 	
 		User found = manager.find(User.class, userWithRoles.getId());
 		assertNotNull(found);
@@ -199,8 +199,8 @@ public class PersistenceTest
 		assertNotNull(theRole);
 		assertTrue(theRole.getRole().equals(UserRole.ROLE_ADMIN) || theRole.getRole().equals(UserRole.ROLE_USER));
 		
-//		manager.getTransaction().begin();
+		manager.getTransaction().begin();
 		manager.remove(found);
-//		manager.getTransaction().commit();
+		manager.getTransaction().commit();
 	}
 }

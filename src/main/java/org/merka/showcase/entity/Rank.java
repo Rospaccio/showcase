@@ -3,6 +3,7 @@ package org.merka.showcase.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -64,7 +65,7 @@ public class Rank
 		this.owner = owner;
 	}
 	
-	@OneToMany(mappedBy = "rank", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "rank", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@OrderBy(value = "positionInRank")
 	public List<RankItem> getItems()
 	{

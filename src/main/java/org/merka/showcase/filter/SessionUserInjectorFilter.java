@@ -48,30 +48,31 @@ public class SessionUserInjectorFilter extends OncePerRequestFilter implements
 			throws ServletException, IOException {
 		try
 		{
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if(request instanceof HttpServletRequest && auth != null
-					&& !auth.getName().equals("anonymousUser"))
-			{
-				EntityManager manager = entityManagerFactory.createEntityManager();
-				User user = null;
-				try
-				{
-					user = manager.createQuery("select u from User u where username = :username", User.class)
-							.setParameter("username", auth.getName()).getSingleResult();
-				}
-				catch(NoResultException ne)
-				{
-					logger.warn("User '" + auth.getName() + "' not found in application database", ne);
-				}
-				if(user != null)
-				{
-					request.setAttribute(KEY_CURRENT_USER, user);
-					
-//					// add the user in the spring scoped attributes
-//					RequestAttributes attributes = RequestContextHolder.currentRequestAttributes();
-//					attributes.setAttribute("user", user, RequestAttributes.SCOPE_REQUEST);
-				}
-			}
+//			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//			if(request instanceof HttpServletRequest && auth != null
+//					&& !auth.getName().equals("anonymousUser")
+//					&& !request.getRequestURI().equals("/logout"))
+//			{
+//				EntityManager manager = entityManagerFactory.createEntityManager();
+//				User user = null;
+//				try
+//				{
+//					user = manager.createQuery("select u from User u where username = :username", User.class)
+//							.setParameter("username", auth.getName()).getSingleResult();
+//				}
+//				catch(NoResultException ne)
+//				{
+//					logger.warn("User '" + auth.getName() + "' not found in application database", ne);
+//				}
+//				if(user != null)
+//				{
+//					request.setAttribute(KEY_CURRENT_USER, user);
+//					
+////					// add the user in the spring scoped attributes
+////					RequestAttributes attributes = RequestContextHolder.currentRequestAttributes();
+////					attributes.setAttribute("user", user, RequestAttributes.SCOPE_REQUEST);
+//				}
+//			}
 		}
 		catch(Exception e)
 		{
