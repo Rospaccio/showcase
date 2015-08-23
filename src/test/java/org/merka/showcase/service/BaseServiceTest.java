@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class BaseServiceTest implements InitializingBean {
 
-	protected EntityManagerFactory factory;
+	@Autowired
+	protected EntityManagerFactory entityFactoryManager;
 	
 	@Autowired
 	protected HsqlDBStarterListener hsqlStarter;
@@ -23,10 +24,10 @@ public class BaseServiceTest implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception 
 	{
-		hsqlStarter.initDataBase();
-		factory = Persistence.createEntityManagerFactory("org.merka.showcase.test.jpa");
-		userService.setEntityManagerFactory(factory);
-		rankService.setEntityManagerFactory(factory);
+//		hsqlStarter.initDataBase();
+//		factory = Persistence.createEntityManagerFactory("org.merka.showcase.test.jpa");
+//		userService.setEntityManagerFactory(factory);
+//		rankService.setEntityManagerFactory(factory);
 	}
 
 }

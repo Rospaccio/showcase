@@ -65,7 +65,7 @@ public class SessionUserInjectorFilter extends OncePerRequestFilter implements
 				}
 				if(user != null)
 				{
-					request.getSession().setAttribute(KEY_CURRENT_USER, user);
+					request.setAttribute(KEY_CURRENT_USER, user);
 					
 //					// add the user in the spring scoped attributes
 //					RequestAttributes attributes = RequestContextHolder.currentRequestAttributes();

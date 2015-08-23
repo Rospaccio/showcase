@@ -1,6 +1,6 @@
 package org.merka.showcase.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -52,20 +52,26 @@ public class RankServiceTest extends BaseServiceTest{
 		User upToDate = userService.findUserById(owner.getId());
 		assertEquals(owner.getId(), upToDate.getId());
 		assertEquals(owner.getUsername(), upToDate.getUsername());
-		assertEquals(4, upToDate.getRanks().size());
+		List<Rank> ranks = rankService.findAllByUsername(owner.getUsername());
+		assertEquals(4, ranks.size());
+		Rank removed = ranks.remove(3);
+		upToDate.setRanks(ranks);
 		
-		Rank removed = upToDate.getRanks().remove(3);
-//		userService.save(upToDate);
-		rankService.delete(removed);
-		upToDate = userService.findUserById(upToDate.getId());
+		rankService.delete(removed.getId());
+		ranks = rankService.findAllByUsername(upToDate.getUsername());
+		assertEquals(3, ranks.size());
+		
+		upToDate = userService.findUserWithRanksById(owner.getId());
 		assertEquals(3, upToDate.getRanks().size());
+		
+		userService.delete(upToDate);
 	}
 	
 	@Test
 	public void testUpdateRank()
 	{
-		User user = User.create("test");
-		user.addRank(Rank.create("rank", "rank"));
+//		User user = User.create("test");
+//		user.addRank(Rank.create("rank", "rank"));
 		
 		
 	}

@@ -27,12 +27,15 @@
 	<bean id="hsqlStarter" class="org.merka.showcase.listener.HsqlDBStarterListener"></bean>
 	
 	<bean id="userService" class="org.merka.showcase.service.UserService">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
 	</bean>
 	
 	<bean id="userServiceUtils" class="org.merka.showcase.service.UserServiceUtils">
 		<constructor-arg index="0" ref="userService"></constructor-arg>
 	</bean>
 	
-	<bean id="rankService" class="org.merka.showcase.service.RankService"></bean>
+	<bean id="rankService" class="org.merka.showcase.service.RankService">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
+	</bean>
 	
 </beans>

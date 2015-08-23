@@ -25,7 +25,7 @@ public class UserServiceTest extends BaseServiceTest{
 		
 		assertNotNull(user.getId());
 		
-		EntityManager manager = factory.createEntityManager();
+		EntityManager manager = entityFactoryManager.createEntityManager();
 		User found = manager.find(User.class, user.getId());
 		
 		assertNotNull(found);
@@ -46,7 +46,7 @@ public class UserServiceTest extends BaseServiceTest{
 		
 		userService.save(original);
 		
-		EntityManager manager = factory.createEntityManager();
+		EntityManager manager = entityFactoryManager.createEntityManager();
 		User saved = manager.find(User.class, original.getId());
 		
 		assertNotNull(saved);

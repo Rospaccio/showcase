@@ -13,10 +13,7 @@ import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "USER_ROLE", 
-		uniqueConstraints = {
-			@UniqueConstraint(columnNames = {"USERNAME", "ROLE"})
-		})
+@Table(name = "USER_ROLE")
 public class UserRole 
 {
 	public static final String ROLE_USER = "ROLE_USER";
@@ -36,8 +33,8 @@ public class UserRole
 		this.id = id;
 	}
 	
-	@ManyToOne(targetEntity = User.class, optional = false)
-	@JoinColumn(name = "USERNAME", referencedColumnName = "username")
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "USER_ID")
 	public User getUser() {
 		return user;
 	}

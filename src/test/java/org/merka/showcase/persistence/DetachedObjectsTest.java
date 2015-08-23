@@ -22,7 +22,7 @@ public class DetachedObjectsTest extends BaseServiceTest {
 	{
 		User testUser = User.create("testUser");
 		testUser.setPassword("password");
-		EntityManager firstManager = factory.createEntityManager();
+		EntityManager firstManager = entityFactoryManager.createEntityManager();
 		firstManager.getTransaction().begin();
 		firstManager.persist(testUser);
 		firstManager.getTransaction().commit();
@@ -35,20 +35,21 @@ public class DetachedObjectsTest extends BaseServiceTest {
 		testUser.setPassword("modified");
 		testUser.addRole(UserRole.ROLE_ADMIN);
 		
-		EntityManager secondManager = factory.createEntityManager();
+		EntityManager secondManager = entityFactoryManager.createEntityManager();
 		secondManager.getTransaction().begin();
 		secondManager.persist(testUser.getRoles().get(1));
 		User merged = secondManager.merge(testUser);
 		secondManager.getTransaction().commit();
 		secondManager.close();
 		
-		EntityManager thirdManager = factory.createEntityManager();
+		EntityManager thirdManager = entityFactoryManager.createEntityManager();
 		User found = thirdManager.find(User.class, testUser.getId());
 		assertEquals("modified", found.getUsername());
 		assertEquals("modified", found.getPassword());
 		assertEquals(2, found.getRoles().size());
 		
 		thirdManager.remove(found);
+		thirdManager.close();
 	}
 
 	@Test
@@ -59,7 +60,7 @@ public class DetachedObjectsTest extends BaseServiceTest {
 		Rank delenda = Rank.create("rank", "rank");
 		user.addRank(delenda);
 		
-		EntityManager manager = factory.createEntityManager();
+		EntityManager manager = entityFactoryManager.createEntityManager();
 		manager.getTransaction().begin();
 		manager.persist(user);
 		manager.getTransaction().commit();
@@ -69,14 +70,14 @@ public class DetachedObjectsTest extends BaseServiceTest {
 		assertEquals(1, forConfirmation.getRanks().size());
 		
 		// creates another manager (new session) and deletes the rank entity
-		EntityManager secondManager = factory.createEntityManager();
+		EntityManager secondManager = entityFactoryManager.createEntityManager();
 		secondManager.getTransaction().begin();
 		Rank attached = secondManager.find(Rank.class, delenda.getId());
 		secondManager.remove(attached);
 		secondManager.getTransaction().commit();
 		secondManager.close();
 		
-		EntityManager thirdManager = factory.createEntityManager();
+		EntityManager thirdManager = entityFactoryManager.createEntityManager();
 		thirdManager.getTransaction().begin();
 		User found = thirdManager.find(User.class, user.getId());
 		assertEquals(0, found.getRanks().size());

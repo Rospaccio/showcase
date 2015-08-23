@@ -29,21 +29,6 @@ public class PersistenceTest
 {
 	@Autowired
 	EntityManagerFactory entityManagerFactory;
-
-//	@BeforeClass
-//	public static void staticSetup() {
-//		hsqlStarter = new HsqlDBStarterListener();
-//		hsqlStarter.setDatabaseName("showcase-test");
-//		hsqlStarter.initDataBase();
-//		entityManagerFactory = Persistence.createEntityManagerFactory("org.merka.showcase.test.jpa");
-//	}
-	
-//	@Override
-//	public void afterPropertiesSet()
-//	{
-//		StartupManager startupManager = new StartupManager();
-//		startupManager.setEntityManagerFactory(entityManagerFactory);	
-//	}
 	
 	@Test
 	@Transactional

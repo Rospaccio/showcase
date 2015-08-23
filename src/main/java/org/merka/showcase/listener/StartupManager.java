@@ -49,7 +49,7 @@ public class StartupManager implements ServletContextListener {
 		//
 		// entityManagerFactory = factory;
 
-		// insertDefaultData();
+		 insertDefaultData();
 	}
 
 	// public static EntityManagerFactory getEntityManagerFactory() {
