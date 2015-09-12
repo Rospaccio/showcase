@@ -1,10 +1,22 @@
 package org.merka.showcase;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import static org.merka.showcase.utils.ShowcaseUtils.*;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BufferedHeader;
 import org.merka.showcase.listener.StartupManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +25,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Handles requests for the application home page.
@@ -53,6 +70,27 @@ public class HomeController extends BasePageController{
 	{
 		startupManager.insertDefaultData();
 		return thymeleafViewName("home");
+	}
+	
+	@RequestMapping("/pentaho-autologin")
+	public View pentahoAutologin() throws ClientProtocolException, IOException
+	{
+		// Gets a ticket from Pentaho
+		
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpGet get = new HttpGet("http://localhost:8080/pentaho/Login?generate-ticket=1&app=showcase&username=admin");
+		HttpResponse response = client.execute(get);
+		InputStream responseStream = response.getEntity().getContent();
+		
+		BufferedReader reader = new BufferedReader(new InputStreamReader(responseStream));
+		String firstLine = reader.readLine();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode node = mapper.readTree(firstLine);
+		String ticketId = node.get("ticketId").asText();
+		
+		RedirectView redirectView = new RedirectView("http://localhost:8080/pentaho/Home?autologin=true&ticket=" + ticketId);
+		return redirectView;
 	}
 	
 	@Override
