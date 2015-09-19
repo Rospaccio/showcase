@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.servlet.ServletContextEvent;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockServletContext;
 
@@ -39,6 +40,7 @@ public class HsqlDBStarterListenerTest {
 	}
 	
 	@Test(expected = IllegalStateException.class)
+	@Ignore
 	public void testFailingInitDB(){
 		HsqlDBStarterListener hsqldInit = new HsqlDBStarterListener();
 		hsqldInit.initDataBase();
