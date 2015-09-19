@@ -135,7 +135,7 @@ public class PersistenceTest
 	@Test
 	public void testPersistUserRankAndItems()
 	{
-		User user = User.create("testUser");
+		User user = User.create("testUser2");
 		EntityManager manager = entityManagerFactory.createEntityManager();
 		
 		manager.getTransaction().begin();
