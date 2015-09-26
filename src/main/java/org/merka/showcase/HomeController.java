@@ -75,10 +75,48 @@ public class HomeController extends BasePageController{
 	@RequestMapping("/pentaho-autologin")
 	public View pentahoAutologin() throws ClientProtocolException, IOException
 	{
+		return pentahoAutologin("http://localhost:8080/pentaho/Home?dummy=true");
+	}
+	
+	@RequestMapping("/pentaho-autologin-plugin")
+	public View pentahoAutologinPlugin() throws ClientProtocolException, IOException
+	{
+		return pentahoAutologin("http://localhost:8080/pentaho/plugin/jpivot/Pivot"
+				+ "?solution=&path=/public/Steel%20Wheels/Analysis/2005%20Q1%20Product%20Analysis.xjpivot.xjpivot&action=2005%20Q1%20Product%20Analysis.xjpivot.xjpivot");
+		// Gets a ticket from Pentaho
+		
+//		HttpClient client = HttpClientBuilder.create().build();
+//		HttpGet get = new HttpGet("http://localhost:8080/pentaho/Login?generate-ticket=1&app=showcase&username=user0.2");
+//		HttpResponse response = client.execute(get);
+//		InputStream responseStream = response.getEntity().getContent();
+//		
+//		BufferedReader reader = new BufferedReader(new InputStreamReader(responseStream));
+//		String firstLine = reader.readLine();
+//		
+//		ObjectMapper mapper = new ObjectMapper();
+//		JsonNode node = mapper.readTree(firstLine);
+//		String ticketId = node.get("ticketId").asText();
+//		
+////		 RedirectView redirectVSiew = new RedirectView("http://localhost:8080/pentaho/Home?autologin=true&ticket=" + ticketId);
+//		RedirectView redirectView = new RedirectView("http://localhost:8080/pentaho/plugin/jpivot/Pivot"
+//				+ "?autologin=true&ticket=" + ticketId
+//				+ "&solution=&path=/public/Steel%20Wheels/Analysis/2005%20Q1%20Product%20Analysis.xjpivot.xjpivot&action=2005%20Q1%20Product%20Analysis.xjpivot.xjpivot");
+//		return redirectView;
+	}
+	
+	@RequestMapping("/pentaho-autologin-api")
+	public View pentahoAutologinApi() throws ClientProtocolException, IOException
+	{
+		return pentahoAutologin("http://localhost:8080/pentaho/api/repo/files/%3A/tree?depth=-1&showHidden=false&filter=*|FOLDERS&_=1443273419486");
+	}
+	
+	
+	private View pentahoAutologin(String targetUrl) throws ClientProtocolException, IOException
+	{
 		// Gets a ticket from Pentaho
 		
 		HttpClient client = HttpClientBuilder.create().build();
-		HttpGet get = new HttpGet("http://localhost:8080/pentaho/Login?userid=admin&password=password&generate-ticket=1&app=showcase&username=user0.2");
+		HttpGet get = new HttpGet("http://localhost:8080/pentaho/Login?generate-ticket=1&app=showcase&username=user0.2");
 		HttpResponse response = client.execute(get);
 		InputStream responseStream = response.getEntity().getContent();
 		
@@ -89,7 +127,8 @@ public class HomeController extends BasePageController{
 		JsonNode node = mapper.readTree(firstLine);
 		String ticketId = node.get("ticketId").asText();
 		
-		RedirectView redirectView = new RedirectView("http://localhost:8080/pentaho/Home?autologin=true&ticket=" + ticketId);
+//		 RedirectView redirectVSiew = new RedirectView("http://localhost:8080/pentaho/Home?autologin=true&ticket=" + ticketId);
+		RedirectView redirectView = new RedirectView(targetUrl + "&autologin=true&ticket=" + ticketId);
 		return redirectView;
 	}
 	
