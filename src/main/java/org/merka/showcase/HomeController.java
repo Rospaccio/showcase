@@ -116,7 +116,7 @@ public class HomeController extends BasePageController{
 		// Gets a ticket from Pentaho
 		
 		HttpClient client = HttpClientBuilder.create().build();
-		HttpGet get = new HttpGet("http://localhost:8080/pentaho/Login?generate-ticket=1&app=showcase&username=user0.2");
+		HttpGet get = new HttpGet("http://localhost:8080/pentaho/Login?generate-ticket=1&app=showcase&username=user0.2&userid=admin&password=password");
 		HttpResponse response = client.execute(get);
 		InputStream responseStream = response.getEntity().getContent();
 		
