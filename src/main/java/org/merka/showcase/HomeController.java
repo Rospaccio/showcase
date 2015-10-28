@@ -9,13 +9,23 @@ import static org.merka.showcase.utils.ShowcaseUtils.*;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.AuthCache;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicAuthCache;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BufferedHeader;
 import org.merka.showcase.listener.StartupManager;
 import org.slf4j.Logger;
@@ -114,10 +124,28 @@ public class HomeController extends BasePageController{
 	private View pentahoAutologin(String targetUrl) throws ClientProtocolException, IOException
 	{
 		// Gets a ticket from Pentaho
+
+		// Created a CredentialProvider for Basic authentication
+		CredentialsProvider provider = new BasicCredentialsProvider();
+		UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("admin", "password");
+		// sets AuthScope.ANY, since we don't really care about the realm in this example
+		provider.setCredentials(AuthScope.ANY, credentials);
 		
-		HttpClient client = HttpClientBuilder.create().build();
-		HttpGet get = new HttpGet("http://localhost:8080/pentaho/Login?generate-ticket=1&app=showcase&username=user0.2&userid=admin&password=password");
-		HttpResponse response = client.execute(get);
+		// Create AuthCache instance
+		HttpHost targetHost = new HttpHost("localhost", 8080, "http");
+		AuthCache authCache = new BasicAuthCache();
+		// Generate BASIC scheme object and add it to the local auth cache
+		BasicScheme basicAuth = new BasicScheme();
+		authCache.put(targetHost, basicAuth);
+		
+		// Creates an HttpClientContext to hold authentication data and sets the credential provider
+		HttpClientContext context = HttpClientContext.create();
+		context.setCredentialsProvider(provider);
+		context.setAuthCache(authCache);
+		HttpClient client = HttpClients.custom().setDefaultCredentialsProvider(provider).build();
+		
+		HttpGet get = new HttpGet("/pentaho/Login?generate-ticket=1&app=showcase&username=user0.2&userid=admin&password=password");
+		HttpResponse response = client.execute(targetHost, get, context);
 		InputStream responseStream = response.getEntity().getContent();
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(responseStream));
