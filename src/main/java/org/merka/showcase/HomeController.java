@@ -131,7 +131,7 @@ public class HomeController extends BasePageController{
 		// sets AuthScope.ANY, since we don't really care about the realm in this example
 		provider.setCredentials(AuthScope.ANY, credentials);
 		
-		// Create AuthCache instance
+		// Creates a target host and an AuthCache instance
 		HttpHost targetHost = new HttpHost("localhost", 8080, "http");
 		AuthCache authCache = new BasicAuthCache();
 		// Generate BASIC scheme object and add it to the local auth cache
