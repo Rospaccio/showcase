@@ -32,7 +32,7 @@ whenever dealing with problems similar to the ones solved here;
 * JQuery
 * Bootstrap
 * Hibernate
-* Jetty as an optional Web Server for easing development
+* Tomcat 7 or 8 as an embedded Web Server for development
 * HyperSQL as the development DBMS
 
 ## Focus
@@ -42,9 +42,6 @@ While developing *Showcase* I kept in mind some basic needs that I always have i
 * security: users authentication and authorization functions should already be working. That includes a custom login page (and form) and the integration with the database (not simply an in-memory user provider). The possible sharp corners due to the complexity of a Spring security configuration should already be solved;
 * a common graphic theme has to be in place and it should be a pleasent one. Nowadays you don't have to look any further than Bootstrap. If you do not use it, you look naive. If you do, you look professional, even if you are a dork at graphics (just like I am);
 * a basic setup of the ORM of choice (Hibernate) must be in place in order to remind you all the basics and to act as a template for any new entity.
-
-## Something personal
-The main force behind the development of *Showcase* has been the bitter realization that I had several gaps in my technical background that I could not afford anymore. These are the kind of gaps that usually strike you while reading questions and answers on StackOverflow. When I browse through topics and tags to find some questions to answer and increase my reputation I am always confronted with the fact that I actually know very little about anything at all.
 
 ## License
 *Showcase* is released under GPLv3 because knowledge must be free for everyone. Stallman rules.
